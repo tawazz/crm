@@ -4,7 +4,8 @@
   "description": "simple crm",
   "main": "main.js",
   "dependencies": {
-    "bootstrap-material-design": "^0.5.10"
+    "bootstrap-material-design": "^0.5.10",
+    "vue": "^2.0.3"
   },
   "devDependencies": {},
   "scripts": {
