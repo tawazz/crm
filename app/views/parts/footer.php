@@ -47,7 +47,7 @@
                 <div class="container">
                     <div class="col-sm-12 text-center">
                       <span class="brand-font">{{brand}}</span> <span>{{ver}}</span>
-                        <span>Copyright &copy; <a class="text-primary"href="http://www.tawazz.net/me">Tawanda Nyakudjga</a> {{ "now"|date("Y") }}</span>
+                        <span>Copyright &copy; <a href="http://www.tawazz.net/me">Tawanda Nyakudjga</a> {{ "now"|date("Y") }}</span>
                     </div>
                 </div>
             </div>
