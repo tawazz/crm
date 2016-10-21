@@ -6,11 +6,10 @@
       {% verbatim %}
       <div class="col-lg-12" id="dashboard">
         <div class="col-lg-12">
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <h1>Admin Console</h1>
-              </hr>
-            </div>
+          <div class="jumbotron">
+            <h1>Admin, Console</h1>
+            <p>This is a simple admin console , for managing business and customer information</p>
+            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
           </div>
         </div>
         <template v-for="menu in menus">

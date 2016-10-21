@@ -5,20 +5,12 @@
   "main": "main.js",
   "dependencies": {
     "bootstrap-material-design": "^0.5.10",
-    "vue":"^2.0.3"
+    "vue": "^2.0.3"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "tawanda",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tawazz/crm.git"
-  },
-  "bugs": {
-    "url": "https://github.com/tawazz/crm/issues"
-  },
-  "homepage": "https://github.com/tawazz/crm#readme"
+  "license": "ISC"
 }

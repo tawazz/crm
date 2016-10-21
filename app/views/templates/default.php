@@ -7,6 +7,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <title>CRM</title>
+        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
         {% include "parts/css.php" %}
         {% block css %}{% endblock %}
         <script src="{{ assets('node_modules/vue/dist/vue.min.js/')}}"></script>
