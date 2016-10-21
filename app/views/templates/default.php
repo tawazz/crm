@@ -9,6 +9,7 @@
         <title>CRM</title>
         {% include "parts/css.php" %}
         {% block css %}{% endblock %}
+        <script src="{{ assets('node_modules/vue/dist/vue.min.js/')}}"></script>
     </head>
     <body>
         {% include "parts/nav.php" %}
