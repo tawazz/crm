@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Database\Capsule\Manager as Capsule;
-require 'app/config/settings.php';
+require_once 'app/config/settings.php';
 $capsule = new Capsule;
 
 $capsule->addConnection([

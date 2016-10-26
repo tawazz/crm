@@ -1,5 +1,5 @@
 <?php
-require 'settings.php';
+require_once 'settings.php';
 return [
   'paths' => [
     'migrations' => 'migrations'
