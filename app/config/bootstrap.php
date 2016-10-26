@@ -1,7 +1,7 @@
 <?php
   session_start();
   require 'vendor/autoload.php';
-  require 'Tazzy-Helpers/autoload.php';
+  require 'app/config/db.config.php';
   use Slim\Slim;
   use HTTP\MiddleWare\Before;
   use HTTP\MiddleWare\Csrf;

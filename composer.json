@@ -2,7 +2,10 @@
     "require": {
         "slim/slim": "2.*",
         "slim/slim-skeleton": "2.1",
-        "slim/views": "0.1.*"
+        "slim/views": "0.1.*",
+        "illuminate/database": "^5.3",
+        "illuminate/events": "^5.3",
+        "robmorgan/phinx": "^0.6.4"
     },
     "autoload":{
       "psr-4":{
