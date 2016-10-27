@@ -41,10 +41,34 @@ class InitialSetUp extends Migration
         $table->timestamps();
       });
 
-      $this->schema->create('service',function($table){
+      $this->schema->create('services',function($table){
         $table ->increments('id');
-        $table->enum('service',['website','hosting','email','other']);
+        $table->enum('type',['website','hosting','email','other']);
         $table->foreign('customer_id')->references('id')->on('customers');
+        $table->date('service_start');
+        $table->date('service_end');
+        $table->timestamps();
+
       })
+
+      $this->schema->create('vault', function($table){
+          $table->increments('id');
+          $table->string('name');
+          $table->string('url');
+          $table->string('username');
+          $table->timestamps();
+          $table->string('password');
+
+      });
+
+      $this->schema->create('payments',function($table){
+        $table->increments('id');
+        $table->foreign('customer_id')->references('id')->on('customers');
+        $table->foreign('service_id')->references('id')->on('services');
+        $table->decimal('amount');
+        $table->date('payed_on');
+        $table->date('due');
+        $table->timestamps();
+      });
     }
 }
