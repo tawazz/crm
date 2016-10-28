@@ -25,10 +25,6 @@ class InitialSetUp extends Migration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change()
-    {
-
-    }
 
     public function up()
     {
@@ -42,8 +38,9 @@ class InitialSetUp extends Migration
       });
 
       $this->schema->create('services',function($table){
-        $table ->increments('id');
+        $table->increments('id');
         $table->enum('type',['website','hosting','email','other']);
+        $table->integer('customer_id')->unsigned();
         $table->foreign('customer_id')->references('id')->on('customers');
         $table->date('service_start');
         $table->date('service_end');
@@ -63,7 +60,9 @@ class InitialSetUp extends Migration
 
       $this->schema->create('payments',function($table){
         $table->increments('id');
+        $table->integer('customer_id')->unsigned();
         $table->foreign('customer_id')->references('id')->on('customers');
+        $table->integer('service_id')->unsigned();
         $table->foreign('service_id')->references('id')->on('services');
         $table->decimal('amount');
         $table->date('payed_on');
