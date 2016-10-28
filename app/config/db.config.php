@@ -6,7 +6,7 @@ $capsule = new Capsule;
 $capsule->addConnection([
     'driver'    => Settings::get('mysql.driver'),
     'host'      => Settings::get('mysql.host'),
-    'database'  => Settings::get('mysql.database'),
+    'database'  => Settings::get('mysql.db'),
     'username'  => Settings::get('mysql.username'),
     'password'  => Settings::get('mysql.password'),
     'charset'   => 'utf8',
