@@ -4,16 +4,17 @@ return [
   'paths' => [
     'migrations' => 'migrations'
   ],
-  'migration_base_class' => '\MyProject\Migration\Migration',
+  'migration_base_class' => '\HTTP\Migrations\Migration',
   'environments' => [
     'default_migration_table' => 'phinxlog',
     'default_database' => 'dev',
     'dev' => [
-      'name'      => Settings::get('mysql.database'),
+      'name'      => Settings::get('mysql.db'),
       'adapter'   => Settings::get('mysql.driver'),
       'host'      => Settings::get('mysql.host'),
-      'username'  => Settings::get('mysql.username'),
-      'password'  => Settings::get('mysql.password'),
+      'user'  => Settings::get('mysql.username'),
+      'pass'  => Settings::get('mysql.password'),
+      'table_prefix' => Settings::get('mysql.prefix')
     ]
   ]
 ];

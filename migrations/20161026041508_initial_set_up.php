@@ -1,6 +1,6 @@
 <?php
 
-use \MyProject\Migration\Migration;
+use HTTP\Migrations\Migration;
 
 class InitialSetUp extends Migration
 {
@@ -49,7 +49,7 @@ class InitialSetUp extends Migration
         $table->date('service_end');
         $table->timestamps();
 
-      })
+      });
 
       $this->schema->create('vault', function($table){
           $table->increments('id');
