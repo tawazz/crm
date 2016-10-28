@@ -39,8 +39,8 @@
           <tbody>
             {% for user in users %}
               <tr>
-                  <td>{{user.username}}</td>
-                  <td>Admin</td>
+                  <td></td>
+                  <td></td>
                   <td>
                     <a href="{{urlFor('admin.users.add',{'id':user.id})}}" class="btn btn-info" data-edit-{{user.id}}>Reset password</a>
                   </td>
