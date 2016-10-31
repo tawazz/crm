@@ -7,14 +7,20 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <title>CRM</title>
+        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
         {% include "parts/css.php" %}
         {% block css %}{% endblock %}
+        <script src="{{ assets('node_modules/vue/dist/vue.min.js/')}}"></script>
     </head>
     <body>
         {% include "parts/nav.php" %}
-        {% block content %}{% endblock %}
-        {% include "parts/footer.php" %}
-        {% include "parts/scripts.php" %}
-        {% block js %}{% endblock %}
+        <div class="container-fluid" style="background-color: #EEE;">
+          <div class="row">
+          {% block content %}{% endblock %}
+          </div>
+      </div>
+      {% include "parts/footer.php" %}
+      {% include "parts/scripts.php" %}
+      {% block js %}{% endblock %}
     </body>
 </html>

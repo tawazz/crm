@@ -2,7 +2,7 @@
   /**
    * settings
    */
-  require 'app/config/config.php';
+  require_once 'app/config/config.php';
   class Settings
   {
     public static function get($path=NULL){

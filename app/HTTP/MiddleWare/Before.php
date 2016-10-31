@@ -33,7 +33,7 @@ class Before extends Middleware{
       {
         $path = substr($path,1);
       }
-      return ($host) ? "http://".$_SERVER['HTTP_HOST'].$app->baseUrl."public/".$path : $app->baseUrl."public/".$path ;
+      return ($host) ? "http://".$_SERVER['HTTP_HOST'].$app->baseUrl."/public/".$path : $app->baseUrl."/public/".$path ;
     });
 
     $twig->addFunction($function);

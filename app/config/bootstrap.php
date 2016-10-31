@@ -1,7 +1,8 @@
 <?php
   session_start();
-  require 'vendor/autoload.php';
-  require 'Tazzy-Helpers/autoload.php';
+  require_once 'vendor/autoload.php';
+  require_once 'app/config/db.config.php';
+  require_once 'Tazzy-Helpers/autoload.php';
   use Slim\Slim;
   use HTTP\MiddleWare\Before;
   use HTTP\MiddleWare\Csrf;
@@ -43,6 +44,9 @@
   });
   //Models
 
+  $app->container->set('Customer',function(){
+    return new HTTP\Models\Customer();
+  });
 
   //routes
   require'app/routes/routes.php';
