@@ -13,21 +13,23 @@
           </div>
         </div>
         <template v-for="menu in menus">
-          <div class="col-sm-6 col-md-4 col-lg-3">
-            <div class="panel panel-primary">
-              <div class="panel-heading">
-                <i v-bind:class="[menu.icon]" class="fa fa-4x fa-user" aria-hidden="true"></i>
-                <p class="fa-2x">
-                  {{ menu.title }}
-                </p>
-              </div>
-              <div class="panel-body">
-                <p>
-                  <small><b>{{ menu.description }}</b></small>
-                </p>
+          <a :href="menu.url">
+            <div class="col-sm-6 col-md-4 col-lg-3">
+              <div class="panel panel-primary">
+                <div class="panel-heading">
+                  <i v-bind:class="[menu.icon]" class="fa fa-4x fa-user" aria-hidden="true"></i>
+                  <p class="fa-2x">
+                    {{ menu.title }}
+                  </p>
+                </div>
+                <div class="panel-body">
+                  <p>
+                    <small><b>{{ menu.description }}</b></small>
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          </a>
         </template>
       </div>
       {% endverbatim %}
@@ -44,7 +46,8 @@
         {
           title:"Customers",
           description : "add, edit and manage customers",
-          icon : "fa-users"
+          icon : "fa-users",
+          url: '{{ urlFor('dash.customers') }}'
         },
         {
           title:"Sites",
