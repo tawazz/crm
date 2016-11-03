@@ -6,7 +6,7 @@
   use Illuminate\Events\Dispatcher;
   use Illuminate\Container\Container;
 
-  require_once 'app/config/settings.php';
+  require_once __DIR__.'/../../../app/config/settings.php';
 
 
   /**

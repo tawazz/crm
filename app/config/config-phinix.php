@@ -1,8 +1,8 @@
 <?php
-require_once 'settings.php';
+require_once __DIR__.'/../../app/config/settings.php';
 return [
   'paths' => [
-    'migrations' => 'migrations'
+    'migrations' => __DIR__.'/../../migrations'
   ],
   'migration_base_class' => '\HTTP\Migrations\Migration',
   'environments' => [
