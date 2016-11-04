@@ -2,9 +2,33 @@
 // so you don't have to do: import Vue from 'vue/dist/vue'
 // This is done with the browser options. For the config, see package.json
 import Vue from 'vue'
-import App from './App.vue'
+import dashboard from './components/dash-menu.vue'
+import Router from 'vue-router'
+import $ from './hooks'
+Vue.use(Router);
 
-new Vue({ // eslint-disable-line no-new
-  el: '#app',
-  render: (h) => h(App)
-})
+global.$ = $
+
+
+const routes = [
+        {
+          path:'/dashboard/customers',
+          component: dashboard,
+          name:'customers'
+        },
+        {
+          path:'/',
+          component: dashboard,
+          name:'home'
+        }
+
+];
+
+const router = new Router({
+  'routes' : routes,
+  'mode': 'history'
+});
+
+new Vue({
+  'router':router
+}).$mount('#app');
