@@ -16,7 +16,12 @@ const routes = [
         {
           path:'/dashboard/customers',
           component: customers,
-          name:'customers'
+          name:'customers',
+        },
+        {
+          path:'/dashboard/customers/:id',
+          name:'customer',
+          component:addCustomer
         },
         {
           path:'/',

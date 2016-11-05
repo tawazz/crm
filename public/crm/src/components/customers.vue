@@ -36,6 +36,7 @@
 
 <script>
 import datatable from '../util/datatable.vue'
+import {$} from '../hooks.js'
 
 export default {
   name:'dashboard',
@@ -44,7 +45,8 @@ export default {
   },
   data:function () {
     return{
-      headers:['Customer','Email','Phone','Vault','Edit','Delete'],
+      vmDatatable:null,
+      headers:['Customer','Email','Phone','Vault','Edit'],
       options:{
         responsive:true,
         columns:[
@@ -63,17 +65,13 @@ export default {
           },
           {
             mRender:function () {
-              return "<td> <a href='' class='btn btn-info btn-raised' >Vault</a>"
+              return "<td> <a href='' class='btn btn-default' >Vault</a>"
             }
           },
           {
-            mRender:function () {
-              return "<td> <a href='' class='btn btn-info btn-raised' >Edit</a>"
-            }
-          },
-          {
-            mRender:function () {
-              return "<td> <a href='' class='btn btn-danger btn-raised' >Delete</a>"
+            mRender:function (data,type,full) {
+              var column = "<td> <a data-edit='__ID__' class='btn btn-info' >Edit</a>";
+              return column.replace('__ID__',full.id);
             }
           }
         ],
@@ -87,6 +85,17 @@ export default {
         }
       }
     }
+  },
+  methods:{
+
+  },
+  mounted:function(){
+
+    $('a[data-edit]').on('click',function (event) {
+      event.preventDefault
+      alert('clicked');
+    });
+
   }
 }
 </script>

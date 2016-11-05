@@ -1,7 +1,7 @@
 <template lang="html">
    <div id="DataTable">
       <table class="hover table table-striped dt-responsive nowrap" cellspacing="0" width="100%"  id="table">
-            <thead>
+            <thead >
                 <tr>
                     <th v-for="header in dtHeaders"> {{ header}}</th>
                 </tr>
@@ -29,22 +29,31 @@ module.exports = {
       }
    },
    data : function () {
-      return {
-         vmDataTable: null
-      }
+     return {
+       vmDataTable:null
+     }
    },
    watch:{
-
+     vmDataTable:function () {
+       this.$parent.vmDataTable = this.vmDataTable;
+     }
    },
-   methods:{
-
+   computed:{
+     parentDataTable:function () {
+       this.$parent.vmDataTable = this.vmDataTable;
+     }
    },
    mounted:function () {
       let vm = this;
       var table =$('#table');
       vm.vmDataTable = $(table).DataTable(vm.dtOptions);
       vm.vmDataTable.search('').draw();
-      vm.vmDataTable.processing =true;
+
+      vm.vmDataTable.on('click','a[data-edit]',function (event) {
+        event.preventDefault
+        var id = $(this).attr('data-edit');
+        vm.$router.push({name:'customer',params:{id:id}});
+      });
    }
 };
 </script>
