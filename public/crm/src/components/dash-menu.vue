@@ -1,5 +1,5 @@
 <template >
-  <div id="dashboard">
+  <div id="dashboard" class="text-center">
     <div class="row">
       <div class="col-lg-12">
         <div class="col-lg-12">
