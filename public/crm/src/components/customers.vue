@@ -90,7 +90,7 @@ export default {
 }
 </script>
 
-<style media="screen">
+<style>
 
   .header hr{
     background-color:#333;
