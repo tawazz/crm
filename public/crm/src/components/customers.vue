@@ -17,7 +17,7 @@
                 </div>
                 <div class="row">
                   <div class="col-lg-12">
-                    <a href="#" class="btn btn-info btn-raised pull-right">Add Customer</a>
+                    <router-link :to="{name:'add-customer'}"  class="btn btn-info btn-raised pull-right">Add Customer</router-link>
                   </div>
                 </div>
                 <div class="row">
@@ -38,6 +38,7 @@
 import datatable from '../util/datatable.vue'
 
 export default {
+  name:'dashboard',
   components: {
     datatable
   },

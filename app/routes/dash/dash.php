@@ -4,4 +4,9 @@
     //$app->render('dash/customers.twig');
     $app->render('home/home.php');
   })->name('dash.customers');
+
+  $app->get('/dashboard/customers/add',function() use ($app) {
+    //$app->render('dash/customers.twig');
+    $app->render('home/home.php');
+  })->name('dash.customers.add');
  ?>
