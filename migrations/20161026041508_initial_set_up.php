@@ -34,6 +34,8 @@ class InitialSetUp extends Migration
         $table->string('last_name');
         $table->string('email');
         $table->string('phone');
+        $table->string('address');
+        $table->string('address');
         $table->timestamps();
       });
 

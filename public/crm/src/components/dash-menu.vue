@@ -1,10 +1,7 @@
-{% extends 'templates/default.php' %}
-
-{% block content %}
-  <div class="container text-center" style="background-color: #EEE;">
+<template >
+  <div id="dashboard" class="text-center">
     <div class="row">
-      {% verbatim %}
-      <div class="col-lg-12" id="dashboard">
+      <div class="col-lg-12">
         <div class="col-lg-12">
           <div class="jumbotron">
             <h1>Admin, Console</h1>
@@ -12,42 +9,42 @@
             <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
           </div>
         </div>
-        <template v-for="menu in menus">
-          <a :href="menu.url">
-            <div class="col-sm-6 col-md-4 col-lg-3">
-              <div class="panel panel-primary">
-                <div class="panel-heading">
-                  <i v-bind:class="[menu.icon]" class="fa fa-4x fa-user" aria-hidden="true"></i>
-                  <p class="fa-2x">
-                    {{ menu.title }}
-                  </p>
-                </div>
-                <div class="panel-body">
-                  <p>
-                    <small><b>{{ menu.description }}</b></small>
-                  </p>
-                </div>
+        <router-link :to="menu.url" v-if="menu.url"  v-for="menu in menus">
+          <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <i v-bind:class="[menu.icon]" class="fa fa-4x fa-user" aria-hidden="true"></i>
+                <p class="fa-2x">
+                  {{ menu.title }}
+                </p>
+              </div>
+              <div class="panel-body">
+                <p>
+                  <small><b>{{ menu.description }}</b></small>
+                </p>
               </div>
             </div>
-          </a>
-        </template>
+          </div>
+        </router-link>
       </div>
-      {% endverbatim %}
     </div>
   </div>
 
-{% endblock %}
-{% block js %}
-<script type="text/javascript">
-  new Vue({
-    el:"#dashboard",
-    data:{
+</template>
+
+<script>
+import base_path from '../hooks.js'
+
+export default {
+  name :'dashboard',
+  data:function () {
+    return {
       menus:[
         {
           title:"Customers",
           description : "add, edit and manage customers",
           icon : "fa-users",
-          url: '{{ urlFor('dash.customers') }}'
+          url:"/dashboard/customers"
         },
         {
           title:"Sites",
@@ -86,7 +83,9 @@
         }
       ]
     }
-  });
+  }
+}
 </script>
 
-{% endblock%}
+<style lang="css">
+</style>
