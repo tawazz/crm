@@ -2,10 +2,18 @@
   <div id="addCustomer">
     <div class="row">
       <div class="col-lg-12">
-        <div class="jumbotron text-center">
-          <h1>{{title}}</h1>
-          <p><li class="fa fa-2x fa-user-plus "></li></p>
-          <p><router-link :to="{name:'customers'}" class="btn btn-primary btn-lg"  role="button">Back To Customers</router-link></p>
+        <div class="jumbotron text-center" v-bind:class="{ 'contact': id }">
+          <div v-if="id">
+            <p><li class="fa fa-6x fa-user "></li></p>
+            <h1>{{ customer.first_name }}  {{ customer.last_name }}</h1>
+            <p><router-link :to="{name:'customers'}" class="btn btn-default btn-lg btn-raised"  role="button">Back To Customers</router-link></p>
+          </div>
+          <div v-else>
+            <p><li class="fa fa-6x fa-user-plus "></li></p>
+            <h1>{{title}}</h1>
+            <p><router-link :to="{name:'customers'}" class="btn btn-primary btn-lg"  role="button">Back To Customers</router-link></p>
+          </div>
+
         </div>
         <div class="panel panel-default">
           <div class="panel-body">
@@ -84,7 +92,8 @@ export default {
         phone:'',
         company:''
       },
-      title:'Add New Customer'
+      title:'Add New Customer',
+      id: null
     }
   },
   mounted:function () {
@@ -97,7 +106,8 @@ export default {
       })
       .done(function( jsonData) {
           vm.customer = jsonData
-          vm.title = 'Edit Customer'
+          vm.title = 'Edit Customer';
+          vm.id = jsonData.id;
       });
     }
   }
@@ -105,4 +115,11 @@ export default {
 </script>
 
 <style lang="css">
+.contact{
+  background-color: skyblue !important;
+  color:whitesmoke;
+}
+.fa-6x {
+    font-size: 6em;
+}
 </style>

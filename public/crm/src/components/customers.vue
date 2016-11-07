@@ -46,7 +46,7 @@ export default {
   data:function () {
     return{
       vmDatatable:null,
-      headers:['Customer','Email','Phone','Vault','Edit'],
+      headers:['Customer','Email','Phone','View'],
       options:{
         responsive:true,
         columns:[
@@ -64,13 +64,8 @@ export default {
             data:'phone'
           },
           {
-            mRender:function () {
-              return "<td> <a href='' class='btn btn-default' >Vault</a>"
-            }
-          },
-          {
             mRender:function (data,type,full) {
-              var column = "<td> <a data-edit='__ID__' class='btn btn-info' >Edit</a>";
+              var column = "<td> <a data-edit='__ID__' class='btn btn-info' >View</a>";
               return column.replace('__ID__',full.id);
             }
           }
