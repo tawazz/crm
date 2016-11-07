@@ -36,10 +36,13 @@
 
       $res = $app->response;
       $res->headers->set('Content-Type', 'application/json');
+      $body = $app->request->getBody();
       try {
+        $body = json_decode($body,true);
         $customer = $app->Customer->findOrFail($id);
+        $customer->fill($body);
+        $customer->save();
         $res->isOk();
-
         echo json_encode($customer);
       } catch (Exception $e) {
         $res->setStatus(400);
@@ -57,7 +60,7 @@
         $customer = $app->Customer->findOrFail($id);
         $res->isOk();
         $customer->delete();
-        echo json_encode($customer);
+        echo json_encode(["deleted"=>true]);
       } catch (Exception $e) {
         $res->setStatus(400);
         echo json_encode([
@@ -66,21 +69,15 @@
       }
     })->name('api.delete.customers');
 
-    $app->post('/customer',function() use ($app) {
+    $app->post('/customers',function() use ($app) {
       $body = $app->request->getBody();
-      $body = json_decode($body);
+      $body = json_decode($body,true);
+      $customer = $app->Customer->create($body);
+      $customer->save();
 
-      $customer_data = [
-        "given_name" => $body->customer->given_name,
-        "email"      => $body->customer->email,
-        "phone"      => $body->customer->phone
-      ];
-
-      $service_data = [
-        "site_url" => $body->service->site_url,
-        "customer_id"=> '',
-        "site_name"=> $body->service->site_name
-      ];
+      $res = $app->response;
+      $res->headers->set('Content-Type', 'application/json');
+      echo json_encode($customer);
 
     })->name('api.add.customers');
  ?>
