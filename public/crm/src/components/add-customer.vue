@@ -15,7 +15,7 @@
           </div>
 
         </div>
-        <div class="panel panel-default">
+        <div class="panel panel-default" v-show="!isLoading">
           <div class="panel-body">
             <form >
               <div class="row">
@@ -71,7 +71,7 @@
             </form>
           </div>
         </div>
-
+        <loader>Saving Customer Data...</loader>
       </div>
   </div>
   </div>
@@ -79,9 +79,13 @@
 
 <script>
 import {$} from '../hooks.js';
+import loader from '../util/loader.vue'
 
 export default {
   name:'addCustomer',
+  components:{
+    loader
+  },
   data:function () {
     return{
       customer:{
@@ -94,6 +98,7 @@ export default {
         company:''
       },
       title:'Add New Customer',
+      isLoading:false
     }
   },
   watch:{
@@ -102,14 +107,17 @@ export default {
     saveCustomer:function(){
       var vm=this;
       if(!this.customer.id){
+        vm.isLoading = true;
         $.post( "/api/customers",JSON.stringify(this.customer)). done(function( data ) {
           if(data.error){
             alert(data.error)
           }else{
             vm.customer = data;
           }
+          vm.isLoading = false;
         });
       }else{
+        vm.isLoading = true;
         $.ajax({
            url: "/api/customers/"+this.customer.id,
            type: 'PUT',
@@ -120,6 +128,7 @@ export default {
              }else{
                vm.customer = data;
              }
+             vm.isLoading = false;
            }
         });
       }
