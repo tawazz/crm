@@ -16,6 +16,22 @@
 
     })->name('api.get.services');
 
+    $app->get('/services/types',function() use ($app) {
+      $res = $app->response;
+      $res->headers->set('Content-Type', 'application/json');
+      try {
+        $services = $app->Service->getTypesOptions();
+        $res->isOk();
+        echo json_encode($services);
+      } catch (Exception $e) {
+        $res->setStatus(400);
+        echo json_encode([
+          "error" => $e->getMessage()
+        ]);
+      }
+
+    })->name('api.get.services.types');
+
     $app->get('/services/:id',function($id) use ($app) {
       $res = $app->response;
       $res->headers->set('Content-Type', 'application/json');

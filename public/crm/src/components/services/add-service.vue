@@ -155,11 +155,23 @@ export default {
            vm.customers=data;
          }
       });
-    }
+    },
+    getTypes:function () {
+      var vm = this;
+      var url = '/api/services/types';
+      $.ajax({
+         url: url,
+         type: 'GET',
+         success: function(data) {
+           vm.types=data;
+         }
+      });
+    },
   },
   mounted:function () {
     var vm = this;
     vm.getCustomers();
+    vm.getTypes();
     if(vm.$route.params.id){
       var url = '/api/services/'+vm.$route.params.id;
       $.ajax({
