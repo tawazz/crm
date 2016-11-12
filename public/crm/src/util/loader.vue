@@ -25,9 +25,9 @@ export default {
 </script>
 
 <style lang="css">
-#spinnerLoader {
-  width: 100%;
-  text-align: center;
-  padding: 1em 0;
-}
+  #spinnerLoader {
+    width: 100%;
+    text-align: center;
+    padding: 1em 0;
+  }
 </style>

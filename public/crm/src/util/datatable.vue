@@ -48,12 +48,6 @@ module.exports = {
       var table =$('#table');
       vm.vmDataTable = $(table).DataTable(vm.dtOptions);
       vm.vmDataTable.search('').draw();
-
-      vm.vmDataTable.on('click','a[data-edit]',function (event) {
-        event.preventDefault
-        var id = $(this).attr('data-edit');
-        vm.$router.push({name:'customer',params:{id:id}});
-      });
    }
 };
 </script>

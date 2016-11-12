@@ -44,9 +44,7 @@
   });
   //Models
 
-  $app->container->set('Customer',function(){
-    return new HTTP\Models\Customer();
-  });
+  require 'app/HTTP/Models/Models.php';
 
   //routes
   require'app/routes/routes.php';

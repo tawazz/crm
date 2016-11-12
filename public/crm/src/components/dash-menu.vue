@@ -47,9 +47,10 @@ export default {
           url:"/dashboard/customers"
         },
         {
-          title:"Sites",
-          description : "manage sites",
-          icon : "fa-globe"
+          title:"Services",
+          description : "manage services",
+          icon : "fa-globe",
+          url:"/dashboard/services"
         },
         {
           title:"Billing",

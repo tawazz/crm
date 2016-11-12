@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import datatable from '../util/datatable.vue'
-import {$} from '../hooks.js'
+import datatable from '../../util/datatable.vue'
+import {$} from '../../hooks.js'
 
 export default {
   name:'dashboard',
@@ -85,10 +85,11 @@ export default {
 
   },
   mounted:function(){
-
-    $('a[data-edit]').on('click',function (event) {
+    let vm =this;
+    vm.$children[2].vmDataTable.on('click','a[data-edit]',function (event) {
       event.preventDefault
-      alert('clicked');
+      var id = $(this).attr('data-edit');
+      vm.$router.push({name:'customer',params:{id:id}});
     });
 
   }

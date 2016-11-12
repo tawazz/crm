@@ -60,7 +60,7 @@
                   </div>
                 </div>
               </div>
-              <input type="hidden" >
+
               <div class="row">
                 <div class="col-md-12">
                   <button class="btn btn-success btn-raised" v-on:click.prevent='saveCustomer'> Save</button>
@@ -78,8 +78,8 @@
 </template>
 
 <script>
-import {$} from '../hooks.js';
-import loader from '../util/loader.vue'
+import {$} from '../../hooks.js';
+import loader from '../../util/loader.vue'
 
 export default {
   name:'addCustomer',
