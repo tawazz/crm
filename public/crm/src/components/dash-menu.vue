@@ -60,7 +60,8 @@ export default {
         {
           title:"Vault",
           description : "manage security and features",
-          icon : "fa-lock"
+          icon : "fa-lock",
+          url:'/dashboard/vault'
         },
         {
           title:"Servers",
