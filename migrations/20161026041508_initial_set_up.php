@@ -29,21 +29,22 @@ class InitialSetUp extends Migration
     public function up()
     {
       $this->schema->create('customers',function($table){
-        $table->increments('id');
+        $table->increments('id')->unsigned();
         $table->string('first_name');
         $table->string('last_name');
+        $table->string('company');
         $table->string('email');
         $table->string('phone');
-        $table->string('address');
         $table->string('address');
         $table->timestamps();
       });
 
       $this->schema->create('services',function($table){
-        $table->increments('id');
+        $table->increments('id')->unsigned();
         $table->enum('type',['website','hosting','email','other']);
         $table->integer('customer_id')->unsigned();
         $table->foreign('customer_id')->references('id')->on('customers');
+        $table->string('name');
         $table->date('service_start');
         $table->date('service_end');
         $table->timestamps();
@@ -51,12 +52,13 @@ class InitialSetUp extends Migration
       });
 
       $this->schema->create('vault', function($table){
-          $table->increments('id');
-          $table->string('name');
+          $table->increments('id')->unsigned();
+          $table->integer('service_id')->unsigned();
+          $table->foreign('service_id')->references('id')->on('services');
           $table->string('url');
           $table->string('username');
-          $table->timestamps();
           $table->string('password');
+          $table->timestamps();
 
       });
 
