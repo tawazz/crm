@@ -1,6 +1,7 @@
 <?php
   namespace HTTP\Models;
   use HTTP\Models\BaseModel as Model;
+  use HTTP\Models\Customer as Customer;
 
   /**
    * A service  model
@@ -11,9 +12,9 @@
 
     public static function getServices($app)
     {
-      $services = $app->Service->all();
+      $services = Service::all();
       foreach ($services as $service) {
-        $customer = $app->Customer->findOrFail($service->customer_id);
+        $customer = Customer::findOrFail($service->customer_id);
         $service->customer = $customer;
       }
       return $services;
@@ -23,6 +24,15 @@
       $options = Service::getPossbileEnumValues('type');
 
       return $options;
+    }
+
+    public static function getServiceWithCustomer($id)
+    {
+      $service = Service::findOrFail($id);
+      $customer = Customer::findOrFail($service->customer_id);
+      $service->customer = $customer;
+
+      return $service;
     }
   }
 

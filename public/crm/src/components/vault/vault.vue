@@ -23,19 +23,19 @@
                   </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-4" v-if="vault != null" v-for="v in vault">
                       <div class="panel panel-info">
                         <div class="panel-heading text-center">
-                            <i v-show="" class="fa fa-4x fa-globe"></i>
-                            <i v-show="1==0" class="fa fa-4x fa-envelope"></i>
-                            <i v-show="false" class="fa fa-4x fa-server"></i>
-                            <i v-show="'cat'=='cat'" class="fa fa-4x fa-bookmark"></i>
-                            <h3>gandtservices</h3>
+                            <i v-show="v.service.type =='website'" class="fa fa-4x fa-globe"></i>
+                            <i v-show="v.service.type=='email'" class="fa fa-4x fa-envelope"></i>
+                            <i v-show="v.service.type=='hosting'" class="fa fa-4x fa-server"></i>
+                            <i v-show="v.service.type=='other'" class="fa fa-4x fa-bookmark"></i>
+                            <h3>{{v.service.name}}</h3>
                         </div>
                         <div class="panel-body" style="padding:0;">
                           <div class="col-xs-7">
-                            <small class="text-primary">gandtservices.com.au</small><br/>
-                            <small>Givemore Naini</small>
+                            <small class="text-primary">{{v.url}}</small><br/>
+                            <small>{{v.service.customer.first_name}} {{v.service.customer.last_name}}</small>
                           </div>
                           <div class="col-xs-5">
                             <div class="pull-right">
@@ -59,6 +59,28 @@
 
 <script>
 export default {
+  name:'vault',
+  data:function () {
+    return{
+      vault:null
+    };
+  },
+  methods:{
+    openVault:function () {
+      let vm =this;
+      $.ajax({
+        method: "GET",
+        url: '/api/vault',
+      })
+      .done(function( jsonData) {
+          vm.vault = jsonData
+      });
+    }
+  },
+  mounted:function () {
+    let vm = this;
+    vm.openVault();
+  }
 }
 </script>
 
