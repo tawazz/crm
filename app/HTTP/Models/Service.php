@@ -1,6 +1,6 @@
 <?php
   namespace HTTP\Models;
-  use Illuminate\Database\Eloquent\Model as Model;
+  use HTTP\Models\BaseModel as Model;
 
   /**
    * A service  model
@@ -17,6 +17,12 @@
         $service->customer = $customer;
       }
       return $services;
+    }
+
+    public static function getTypesOptions(){
+      $options = Service::getPossbileEnumValues('type');
+
+      return $options;
     }
   }
 
