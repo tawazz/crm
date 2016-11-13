@@ -21,13 +21,11 @@
     "vue": "vue/dist/vue"
   },
   "dependencies": {
-    "bulma": "^0.2.3",
     "datatables.net": "^1.10.12",
     "datatables.net-bs": "^1.10.12",
     "datatables.net-responsive-bs": "^2.1.0",
     "moment": "^2.15.2",
     "vue": "^2.0.1",
-    "vue-bulma-tabs": "^1.0.0",
     "vue-router": "^2.0.1"
   },
   "devDependencies": {
