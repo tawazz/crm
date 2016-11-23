@@ -19,17 +19,17 @@
                 </div>
                 <div class="row">
                   <div class="col-lg-12">
-                    <router-link :to="{name:'add-customer'}"  class="btn btn-info btn-raised pull-right">Add To Vault</router-link>
+                    <router-link :to="{name:'add-to-vault'}"  class="btn btn-info btn-raised pull-right">Add To Vault</router-link>
                   </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-4" v-if="vault != null" v-for="v in vault">
                       <div class="panel panel-info">
                         <div class="panel-heading text-center">
-                            <i v-show="v.service.type =='website'" class="fa fa-4x fa-globe"></i>
-                            <i v-show="v.service.type=='email'" class="fa fa-4x fa-envelope"></i>
-                            <i v-show="v.service.type=='hosting'" class="fa fa-4x fa-server"></i>
-                            <i v-show="v.service.type=='other'" class="fa fa-4x fa-bookmark"></i>
+                            <i v-if="v.service.type =='website'" class="fa fa-4x fa-globe"></i>
+                            <i v-if="v.service.type=='email'" class="fa fa-4x fa-envelope"></i>
+                            <i v-if="v.service.type=='hosting'" class="fa fa-4x fa-server"></i>
+                            <i v-if="v.service.type=='other'" class="fa fa-4x fa-bookmark"></i>
                             <h3>{{v.service.name}}</h3>
                         </div>
                         <div class="panel-body" style="padding:0;">

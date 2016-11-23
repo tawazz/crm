@@ -8,6 +8,7 @@ import addCustomer from './components/customers/add-customer.vue'
 import services from './components/services/services.vue'
 import addService from './components/services/add-service.vue'
 import vault from './components/vault/vault.vue'
+import add_to_vault from './components/vault/addtovault.vue'
 import Router from 'vue-router'
 Vue.use(Router);
 
@@ -54,7 +55,12 @@ const routes = [
           path:'/dashboard/vault',
           name:'vault',
           component:vault
-        }
+      },
+      {
+        path:'/dashboard/vault/add',
+        name:'add-to-vault',
+        component:add_to_vault
+      }
 
 ];
 
