@@ -13,7 +13,7 @@
               <div class="panel-body">
                 <div class="header text-center">
                   <div class="input-group">
-                      <input type="text" class="form-control" value="" placeholder="Search">
+                      <input type="text" class="form-control" v-model="search_vault" placeholder="Search">
                       <div class="input-group-addon"><li class="fa fa-search"></li></div>
                   </div>
                 </div>
@@ -62,8 +62,32 @@ export default {
   name:'vault',
   data:function () {
     return{
-      vault:null
+      vault:null,
+      og_vault:[],
+      search_vault:''
     };
+  },
+  watch:{
+    search_vault:function () {
+      let vm = this;
+      if (vm.vault != null) {
+          if(vm.search_vault == ''){
+            vm.vault = vm.og_vault;
+          }
+          if (vm.search_vault != '' && !vm.vault.length >0) {
+            vm.vault = vm.og_vault;
+          }else{
+            vm.vault = $.grep(vm.vault, function( vault ) {
+              return (vault.url.includes(vm.search_vault) ||
+               vault.username.includes(vm.search_vault) ||
+               vault.notes.includes(vm.search_vault) ||
+               vault.service.name.includes(vm.search_vault)||
+               vault.service.customer.first_name.includes(vm.search_vault)||
+               vault.service.customer.last_name.includes(vm.search_vault));
+            });
+          }
+      }
+    }
   },
   methods:{
     openVault:function () {
@@ -73,7 +97,8 @@ export default {
         url: '/api/vault',
       })
       .done(function( jsonData) {
-          vm.vault = jsonData
+          vm.vault = jsonData;
+          vm.og_vault = vm.vault;
       });
     }
   },
