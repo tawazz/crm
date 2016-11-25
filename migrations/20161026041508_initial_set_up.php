@@ -58,6 +58,7 @@ class InitialSetUp extends Migration
           $table->string('url');
           $table->string('username');
           $table->string('password');
+          $table->string('notes');
           $table->timestamps();
 
       });

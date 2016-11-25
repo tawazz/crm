@@ -55,12 +55,17 @@ const routes = [
           path:'/dashboard/vault',
           name:'vault',
           component:vault
-      },
-      {
-        path:'/dashboard/vault/add',
-        name:'add-to-vault',
-        component:add_to_vault
-      }
+        },
+        {
+          path:'/dashboard/vault/add',
+          name:'add-to-vault',
+          component:add_to_vault
+        },
+        {
+          path:'/dashboard/vault/:id',
+          name:'vault-edit',
+          component:add_to_vault
+        },
 
 ];
 

@@ -34,6 +34,16 @@
 
       return $service;
     }
+
+    public function vaults()
+    {
+      return $this->hasMany('HTTP\Models\Vault');
+    }
+
+    public function customer()
+    {
+      return $this->belongsTo('HTTP\Models\Customer');
+    }
   }
 
 

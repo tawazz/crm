@@ -5,7 +5,7 @@
         <div class="jumbotron text-center" v-bind:class="{ 'contact': vault.id }">
           <div v-if="vault.id">
             <p><li class="fa fa-6x fa-globe "></li></p>
-            <h1>{{ vault.name }}</h1>
+            <h1>{{ vault.service.name }}</h1>
             <p><router-link :to="{name:'vault'}" class="btn btn-default btn-lg btn-raised"  role="button">Back To vault</router-link></p>
           </div>
           <div v-else>
@@ -27,8 +27,13 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-group ">
-                    <label class="control-label">Name</label>
-                    <input type="text" class="form-control" v-model="vault.name">
+                    <label class="control-label">Service</label>
+                    <select class="form-control" v-show="!services.length > 0">
+                      <option>Loading...</option>
+                    </select>
+                    <select v-if="services.length > 0"class="form-control" v-model="vault.service_id">
+                      <option v-for="service in services" :value="service.id">{{service.name}}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -42,7 +47,7 @@
                 <div class="col-md-6">
                   <div class="form-group ">
                     <label class="control-label" for="inputSuccess2">password</label>
-                    <input type="text" class="form-control" v-model="vault.password"  />
+                    <input type="password" class="form-control" v-model="vault.password"  />
                   </div>
                 </div>
                 <div class="col-md-12">
@@ -86,7 +91,8 @@ export default {
       title:'Add To Vault',
       isLoading:false,
       customers:null,
-      types:null
+      types:null,
+      services:{}
     }
   },
   watch:{
@@ -96,16 +102,18 @@ export default {
       var vm=this;
       if(!this.vault.id){
         vm.isLoading = true;
-        $.post( "/api/vault",JSON.stringify(this.vault)). done(function( data ) {
-          if(data.error){
-            alert(data.error)
-          }else{
-            vm.vault = data;
-          }
+        $.post( "/api/vault",JSON.stringify(this.vault))
+        . done(function( data ) {
+          vm.vault = data;
           vm.isLoading = false;
+          vm.$router.push({name:'vault'});
+        })
+        .fail(function (data) {
+            alert(data.error)
         });
       }else{
         vm.isLoading = true;
+        delete vm.vault.service;
         $.ajax({
            url: "/api/vault/"+this.vault.id,
            type: 'PUT',
@@ -117,6 +125,7 @@ export default {
                vm.vault = data;
              }
              vm.isLoading = false;
+             vm.$router.push({name:'vault'});
            }
         });
       }
@@ -136,44 +145,38 @@ export default {
          }
       });
     },
-    getCustomers:function () {
+    getServices:function () {
       var vm = this;
-      var url = '/api/customers';
+      var url = '/api/services';
       $.ajax({
          url: url,
          type: 'GET',
          success: function(data) {
-           vm.customers=data;
+           vm.services=data;
          }
       });
     },
-    getTypes:function () {
-      var vm = this;
-      var url = '/api/vault/types';
-      $.ajax({
-         url: url,
-         type: 'GET',
-         success: function(data) {
-           vm.types=data;
-         }
-      });
+    fetchVault:function () {
+      let vm =this;
+      if(vm.$route.params.id){
+        var url = '/api/vault/'+vm.$route.params.id;
+        $.ajax({
+          method: "GET",
+          url: url,
+        })
+        .done(function( jsonData) {
+            vm.vault= jsonData
+            vm.title = 'Edit Vault';
+        });
+      }else {
+
+      }
     },
   },
   mounted:function () {
     var vm = this;
-    if(vm.$route.params.id){
-      var url = '/api/vault/'+vm.$route.params.id;
-      $.ajax({
-        method: "GET",
-        url: url,
-      })
-      .done(function( jsonData) {
-          vm.vault= jsonData
-          vm.title = 'Edit Vault';
-      });
-    }else {
-
-    }
+    vm.fetchVault();
+    vm.getServices();
   }
 }
 </script>

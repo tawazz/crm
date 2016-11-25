@@ -20,7 +20,7 @@
       $res = $app->response;
       $res->headers->set('Content-Type', 'application/json');
       try {
-        $vault = $app->vault->getTypesOptions();
+        $vault = $app->Vault->getTypesOptions();
         $res->isOk();
         echo json_encode($vault);
       } catch (Exception $e) {
@@ -36,7 +36,8 @@
       $res = $app->response;
       $res->headers->set('Content-Type', 'application/json');
       try {
-        $vault = $app->vault->findOrFail($id);
+        $vault = $app->Vault->findOrFail($id);
+        $vault->service = $vault->service->customer;
         $res->isOk();
         echo json_encode($vault);
       } catch (Exception $e) {
@@ -55,7 +56,7 @@
       $body = $app->request->getBody();
       try {
         $body = json_decode($body,true);
-        $vault = $app->vault->findOrFail($id);
+        $vault = $app->Vault->findOrFail($id);
         $vault->fill($body);
         $vault->save();
         $res->isOk();
@@ -73,7 +74,7 @@
       $res = $app->response;
       $res->headers->set('Content-Type', 'application/json');
       try {
-        $vault = $app->vault->findOrFail($id);
+        $vault = $app->Vault->findOrFail($id);
         $res->isOk();
         $vault->delete();
         echo json_encode(["deleted"=>true]);
@@ -88,7 +89,7 @@
     $app->post('/vault',function() use ($app) {
       $body = $app->request->getBody();
       $body = json_decode($body,true);
-      $vault = $app->vault->create($body);
+      $vault = $app->Vault->create($body);
       $vault->save();
 
       $res = $app->response;

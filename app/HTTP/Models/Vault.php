@@ -20,6 +20,11 @@
       return $vault;
     }
 
+    public function service()
+    {
+        return $this->belongsTo('HTTP\Models\Service');
+    }
+
   }
 
 
