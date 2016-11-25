@@ -74,16 +74,17 @@ export default {
           if(vm.search_vault == ''){
             vm.vault = vm.og_vault;
           }
-          if (vm.search_vault != '' && !vm.vault.length >0) {
-            vm.vault = vm.og_vault;
-          }else{
+          else{
+            if (vm.search_vault != '' && !vm.vault.length >0) {
+              vm.vault = vm.og_vault;
+            }
             vm.vault = $.grep(vm.vault, function( vault ) {
-              return (vault.url.includes(vm.search_vault) ||
-               vault.username.includes(vm.search_vault) ||
-               vault.notes.includes(vm.search_vault) ||
-               vault.service.name.includes(vm.search_vault)||
-               vault.service.customer.first_name.includes(vm.search_vault)||
-               vault.service.customer.last_name.includes(vm.search_vault));
+              return (vault.url.toLocaleLowerCase().includes(vm.search_vault.toLocaleLowerCase()) ||
+               vault.username.toLocaleLowerCase().includes(vm.search_vault.toLocaleLowerCase()) ||
+               vault.notes.toLocaleLowerCase().includes(vm.search_vault.toLocaleLowerCase()) ||
+               vault.service.name.toLocaleLowerCase().includes(vm.search_vault.toLocaleLowerCase())||
+               vault.service.customer.first_name.toLocaleLowerCase().includes(vm.search_vault.toLocaleLowerCase())||
+               vault.service.customer.last_name.toLocaleLowerCase().includes(vm.search_vault.toLocaleLowerCase()));
             });
           }
       }
