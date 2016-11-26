@@ -42,7 +42,7 @@ const routes = [
           component:services
         },
         {
-          path:'/dashboard/customers/:id',
+          path:'/dashboard/services/:id',
           name:'service',
           component:addService
         },
