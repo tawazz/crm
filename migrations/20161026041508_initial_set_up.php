@@ -43,7 +43,7 @@ class InitialSetUp extends Migration
         $table->increments('id')->unsigned();
         $table->enum('type',['website','hosting','email','other']);
         $table->integer('customer_id')->unsigned();
-        $table->foreign('customer_id')->references('id')->on('customers');
+        $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade')->onUpdate('cascade');
         $table->string('name');
         $table->date('service_start');
         $table->date('service_end');
@@ -54,7 +54,7 @@ class InitialSetUp extends Migration
       $this->schema->create('vault', function($table){
           $table->increments('id')->unsigned();
           $table->integer('service_id')->unsigned();
-          $table->foreign('service_id')->references('id')->on('services');
+          $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade')->onUpdate('cascade');
           $table->string('url');
           $table->string('username');
           $table->string('password');
@@ -66,9 +66,9 @@ class InitialSetUp extends Migration
       $this->schema->create('payments',function($table){
         $table->increments('id');
         $table->integer('customer_id')->unsigned();
-        $table->foreign('customer_id')->references('id')->on('customers');
+        $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade')->onUpdate('cascade');
         $table->integer('service_id')->unsigned();
-        $table->foreign('service_id')->references('id')->on('services');
+        $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade')->onUpdate('cascade');
         $table->decimal('amount');
         $table->date('payed_on');
         $table->date('due');
