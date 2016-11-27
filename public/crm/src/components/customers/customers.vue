@@ -36,7 +36,7 @@
 
 <script>
 import datatable from '../../util/datatable.vue'
-import {$} from '../../hooks.js'
+import {$,bus} from '../../hooks.js'
 
 export default {
   name:'dashboard',

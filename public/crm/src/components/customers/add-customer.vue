@@ -65,28 +65,32 @@
                 <div class="col-md-12">
                   <button class="btn btn-success btn-raised" v-on:click.prevent='saveCustomer'> Save</button>
                   <router-link :to="{name:'customers'}" class="btn btn-warning btn-raised"> Cancel</router-link>
-                  <button class="btn btn-danger btn-raised" v-on:click.prevent='deleteCustomer'> Delete </button>
+                  <button class="btn btn-danger btn-raised" v-on:click.prevent='deletePromptBox'> Delete </button>
                 </div>
               </div>
             </form>
           </div>
         </div>
         <loader>Saving Customer Data...</loader>
+         <confirmbox id="del_cus" :options="deletePrompt"></confirmbox>
       </div>
   </div>
   </div>
 </template>
 
 <script>
-import {$} from '../../hooks.js';
+import {$,bus} from '../../hooks.js';
 import loader from '../../util/loader.vue'
+import confirmbox from '../../util/confirmbox.vue'
 
 export default {
   name:'addCustomer',
   components:{
-    loader
+    loader,
+    confirmbox
   },
   data:function () {
+    let vm = this;
     return{
       customer:{
         id:null,
@@ -98,12 +102,29 @@ export default {
         company:''
       },
       title:'Add New Customer',
-      isLoading:false
+      isLoading:false,
+      deletePrompt: {
+                icon: "<i class='fa fa-exclamation-triangle fa-2x text-danger' aria-hidden='true'></i>",
+                message: "Are you sure you want to Delete ?",
+                buttons: [{
+                    text: "Delete",
+                    event: "delete",
+                    bsColor: "btn-danger",
+                    handler: function() {
+                        vm.deleteCustomer();
+                    },
+                    autoclose: true
+                }],
+                id:'del_cus'
+            },
     }
   },
   watch:{
   },
   methods:{
+    deletePromptBox:function () {
+      bus.$emit('showAlert', 'del_cus');
+    },
     saveCustomer:function(){
       var vm=this;
       if(!this.customer.id){
