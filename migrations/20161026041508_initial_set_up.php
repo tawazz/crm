@@ -32,10 +32,10 @@ class InitialSetUp extends Migration
         $table->increments('id')->unsigned();
         $table->string('first_name');
         $table->string('last_name');
-        $table->string('company');
-        $table->string('email');
-        $table->string('phone');
-        $table->string('address');
+        $table->string('company')->nullable();
+        $table->string('email')->nullable();
+        $table->string('phone')->nullable();
+        $table->string('address')->nullable();
         $table->timestamps();
       });
 
@@ -44,9 +44,9 @@ class InitialSetUp extends Migration
         $table->enum('type',['website','hosting','email','other']);
         $table->integer('customer_id')->unsigned();
         $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade')->onUpdate('cascade');
-        $table->string('name');
+        $table->string('name')->nullable();
         $table->date('service_start');
-        $table->date('service_end');
+        $table->date('service_end')->nullable();
         $table->timestamps();
 
       });
@@ -55,10 +55,10 @@ class InitialSetUp extends Migration
           $table->increments('id')->unsigned();
           $table->integer('service_id')->unsigned();
           $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade')->onUpdate('cascade');
-          $table->string('url');
-          $table->string('username');
-          $table->string('password');
-          $table->string('notes');
+          $table->string('url')->nullable();
+          $table->string('username')->nullable();
+          $table->string('password')->nullable();
+          $table->string('notes')->nullable();
           $table->timestamps();
 
       });
@@ -71,7 +71,7 @@ class InitialSetUp extends Migration
         $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade')->onUpdate('cascade');
         $table->decimal('amount');
         $table->date('payed_on');
-        $table->date('due');
+        $table->date('due')->nullable();
         $table->timestamps();
       });
     }
