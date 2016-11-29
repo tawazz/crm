@@ -14,6 +14,9 @@
   $app->get('/help',function() use ($app){
     $app->render('home/help.php');
   })->name('help');
+  $app->get('/invoice',function() use ($app){
+    $app->render('home/invoice.php');
+  })->name('invoice');
 
   $app->post('/contact', function() use ($app){
     if( isset($_POST['name']) && isset($_POST['email']) && isset($_POST['phone']) ){

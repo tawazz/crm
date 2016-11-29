@@ -1,13 +1,13 @@
 <?php
   namespace HTTP\Models;
-  use Illuminate\Database\Eloquent\Model as Model;
+  use HTTP\Models\BaseModel as Model;
 
   /**
    * A customer  model
    */
   class Customer extends Model
   {
-
+    protected $guarded = array();
   }
 
 

@@ -1,0 +1,200 @@
+<template lang="html">
+  <div id="addservice">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="jumbotron text-center" v-bind:class="{ 'contact': service.id }">
+          <div v-if="service.id">
+            <p><li class="fa fa-6x fa-globe "></li></p>
+            <h1>{{ service.name }}</h1>
+            <p><router-link :to="{name:'services'}" class="btn btn-default btn-lg btn-raised"  role="button">Back To services</router-link></p>
+          </div>
+          <div v-else>
+            <p><li class="fa fa-6x fa-user-plus "></li></p>
+            <h1>{{title}}</h1>
+            <p><router-link :to="{name:'services'}" class="btn btn-primary btn-lg"  role="button">Back To services</router-link></p>
+          </div>
+
+        </div>
+        <div class="panel panel-default" v-show="!isLoading">
+          <div class="panel-body">
+            <form >
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group ">
+                    <label class="control-label" for="inputSuccess2">Service Name</label>
+                    <input type="text" class="form-control" v-model="service.name" />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group ">
+                    <label class="control-label" for="inputSuccess2">Service Type</label>
+                    <select class="form-control" v-model="service.type">
+                      <option v-for="type in types" :value="type">{{type}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group ">
+                    <label class="control-label" for="inputSuccess2">Customer</label>
+                    <select class="form-control" v-model="service.customer_id">
+                      <option v-for="customer in customers" :value="customer.id">{{customer.first_name}} {{customer.last_name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group ">
+                    <label class="control-label" for="inputSuccess2">Service Started</label>
+                    <input type="date" class="form-control" v-model="service.service_start"  />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group ">
+                    <label class="control-label" for="inputSuccess2">Service Ended</label>
+                    <input type="date" class="form-control" v-model="service.service_end"  />
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <button class="btn btn-success btn-raised" v-on:click.prevent='saveService'> Save</button>
+                  <router-link :to="{name:'services'}" class="btn btn-warning btn-raised"> Cancel</router-link>
+                  <button class="btn btn-danger btn-raised" v-on:click.prevent='deleteService'> Delete </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <loader>Saving service Data...</loader>
+      </div>
+  </div>
+  </div>
+</template>
+
+<script>
+import {$} from '../../hooks.js';
+import loader from '../../util/loader.vue'
+
+export default {
+  name:'addservice',
+  components:{
+    loader
+  },
+  data:function () {
+    return{
+      service:{
+        id:null,
+        name:'',
+        type:'',
+        service_start:'',
+        service_end:'',
+        customer_id:'',
+      },
+      title:'Add New Service',
+      isLoading:false,
+      customers:null,
+      types:null
+    }
+  },
+  watch:{
+  },
+  methods:{
+    saveService:function(){
+      var vm=this;
+      if(!this.service.id){
+        vm.isLoading = true;
+        $.post( "/api/services",JSON.stringify(this.service)). done(function( data ) {
+          if(data.error){
+            alert(data.error)
+          }else{
+            vm.service = data;
+          }
+          vm.isLoading = false;
+        });
+      }else{
+        vm.isLoading = true;
+        $.ajax({
+           url: "/api/services/"+this.service.id,
+           type: 'PUT',
+           data: JSON.stringify(vm.service),
+           success: function(data) {
+             if(data.error){
+               alert(data.error)
+             }else{
+               vm.service = data;
+             }
+             vm.isLoading = false;
+           }
+        });
+      }
+
+    },
+    deleteService:function () {
+      var vm =this;
+      $.ajax({
+         url: "/api/services/"+this.service.id,
+         type: 'delete',
+         success: function(data) {
+           if(data.error){
+             alert(data.error)
+           }else{
+             vm.$router.push({"name":"services"});
+           }
+         }
+      });
+    },
+    getCustomers:function () {
+      var vm = this;
+      var url = '/api/customers';
+      $.ajax({
+         url: url,
+         type: 'GET',
+         success: function(data) {
+           vm.customers=data;
+         }
+      });
+    },
+    getTypes:function () {
+      var vm = this;
+      var url = '/api/services/types';
+      $.ajax({
+         url: url,
+         type: 'GET',
+         success: function(data) {
+           vm.types=data;
+         }
+      });
+    },
+  },
+  mounted:function () {
+    var vm = this;
+    vm.getCustomers();
+    vm.getTypes();
+    if(vm.$route.params.id){
+      var url = '/api/services/'+vm.$route.params.id;
+      $.ajax({
+        method: "GET",
+        url: url,
+      })
+      .done(function( jsonData) {
+          vm.service = jsonData
+          vm.title = 'Edit Service';
+      });
+    }else {
+
+    }
+  }
+}
+</script>
+
+<style lang="css">
+.contact{
+  background-color: skyblue !important;
+  color:whitesmoke;
+}
+.fa-6x {
+    font-size: 6em;
+}
+</style>
