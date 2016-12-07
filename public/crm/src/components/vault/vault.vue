@@ -35,7 +35,8 @@
                         <div class="panel-body" style="padding:0;">
                           <div class="col-xs-7">
                             <small class="text-primary">{{v.url}}</small><br/>
-                            <small>{{v.service.customer.first_name}} {{v.service.customer.last_name}}</small>
+                            <small>{{v.service.customer.first_name}} {{v.service.customer.last_name}}</small><br>
+                            <small>{{v.notes}}</small>
                           </div>
                           <div class="col-xs-5">
                             <div class="pull-right">
