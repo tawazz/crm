@@ -59,9 +59,9 @@
 
               <div class="row">
                 <div class="col-md-12">
-                  <button class="btn btn-success btn-raised" v-on:click.prevent='saveService'> Save</button>
+                  <button class="btn btn-success btn-raised" v-on:click.prevent="saveService"> Save</button>
                   <router-link :to="{name:'services'}" class="btn btn-warning btn-raised"> Cancel</router-link>
-                  <button class="btn btn-danger btn-raised" v-on:click.prevent='deletePromptBox'> Delete </button>
+                  <button class="btn btn-danger btn-raised" v-on:click.prevent="deletePromptBox"> Delete </button>
                 </div>
               </div>
             </form>
@@ -75,147 +75,152 @@
 </template>
 
 <script>
-import {$,bus} from '../../hooks.js';
-import loader from '../../util/loader.vue'
-import confirmbox from '../../util/confirmbox.vue'
+    import {
+        $,
+        bus
+    } from '../../hooks.js';
+    import loader from '../../util/loader.vue'
+    import confirmbox from '../../util/confirmbox.vue'
 
-export default {
-  name:'addservice',
-  components:{
-    loader,
-    confirmbox
-  },
-  data:function () {
-    let vm = this;
-    return{
-      service:{
-        id:null,
-        name:'',
-        type:'',
-        service_start:'',
-        service_end:'',
-        customer_id:'',
-      },
-      title:'Add New Service',
-      isLoading:false,
-      customers:null,
-      types:null,
-      deletePrompt: {
-                icon: "<i class='fa fa-exclamation-triangle fa-2x text-danger' aria-hidden='true'></i>",
-                message: "Are you sure you want to Delete ?",
-                buttons: [{
-                    text: "Delete",
-                    event: "delete",
-                    bsColor: "btn-danger",
-                    handler: function() {
-                        vm.deleteService();
-                    },
-                    autoclose: true
-                }],
-                id:'del_ser'
+    export default {
+        name: 'addservice',
+        components: {
+            loader,
+            confirmbox
+        },
+        data: function() {
+            let vm = this;
+            return {
+                service: {
+                    id: null,
+                    name: '',
+                    type: '',
+                    service_start: '',
+                    service_end: '',
+                    customer_id: '',
+                },
+                title: 'Add New Service',
+                isLoading: false,
+                customers: null,
+                types: null,
+                deletePrompt: {
+                    icon: "<i class='fa fa-exclamation-triangle fa-2x text-danger' aria-hidden='true'></i>",
+                    message: "Are you sure you want to Delete ?",
+                    buttons: [{
+                        text: "Delete",
+                        event: "delete",
+                        bsColor: "btn-danger",
+                        handler: function() {
+                            vm.deleteService();
+                        },
+                        autoclose: true
+                    }],
+                    id: 'del_ser'
+                },
+            }
+        },
+        watch: {},
+        methods: {
+            deletePromptBox: function() {
+                bus.$emit('showAlert', 'del_ser');
             },
-    }
-  },
-  watch:{
-  },
-  methods:{
-     deletePromptBox:function () {
-      bus.$emit('showAlert', 'del_ser');
-    },
-    saveService:function(){
-      var vm=this;
-      if(!this.service.id){
-        vm.isLoading = true;
-        $.post( "/api/services",JSON.stringify(this.service)). done(function( data ) {
-          if(data.error){
-            alert(data.error)
-          }else{
-            vm.service = data;
-          }
-          vm.isLoading = false;
-        });
-      }else{
-        vm.isLoading = true;
-        $.ajax({
-           url: "/api/services/"+this.service.id,
-           type: 'PUT',
-           data: JSON.stringify(vm.service),
-           success: function(data) {
-             if(data.error){
-               alert(data.error)
-             }else{
-               vm.service = data;
-             }
-             vm.isLoading = false;
-           }
-        });
-      }
+            saveService: function() {
+                var vm = this;
+                if (!this.service.id) {
+                    vm.isLoading = true;
+                    $.post("/api/services", JSON.stringify(this.service)).done(function(data) {
+                        if (data.error) {
+                            alert(data.error)
+                        } else {
+                            vm.service = data;
+                        }
+                        vm.isLoading = false;
+                    });
+                } else {
+                    vm.isLoading = true;
+                    $.ajax({
+                        url: "/api/services/" + this.service.id,
+                        type: 'PUT',
+                        data: JSON.stringify(vm.service),
+                        success: function(data) {
+                            if (data.error) {
+                                alert(data.error)
+                            } else {
+                                vm.service = data;
+                            }
+                            vm.isLoading = false;
+                        }
+                    });
+                }
 
-    },
-    deleteService:function () {
-      var vm =this;
-      $.ajax({
-         url: "/api/services/"+this.service.id,
-         type: 'delete',
-         success: function(data) {
-           if(data.error){
-             alert(data.error)
-           }else{
-             vm.$router.push({"name":"services"});
-           }
-         }
-      });
-    },
-    getCustomers:function () {
-      var vm = this;
-      var url = '/api/customers';
-      $.ajax({
-         url: url,
-         type: 'GET',
-         success: function(data) {
-           vm.customers=data;
-         }
-      });
-    },
-    getTypes:function () {
-      var vm = this;
-      var url = '/api/services/types';
-      $.ajax({
-         url: url,
-         type: 'GET',
-         success: function(data) {
-           vm.types=data;
-         }
-      });
-    },
-  },
-  mounted:function () {
-    var vm = this;
-    vm.getCustomers();
-    vm.getTypes();
-    if(vm.$route.params.id){
-      var url = '/api/services/'+vm.$route.params.id;
-      $.ajax({
-        method: "GET",
-        url: url,
-      })
-      .done(function( jsonData) {
-          vm.service = jsonData
-          vm.title = 'Edit Service';
-      });
-    }else {
+            },
+            deleteService: function() {
+                var vm = this;
+                $.ajax({
+                    url: "/api/services/" + this.service.id,
+                    type: 'delete',
+                    success: function(data) {
+                        if (data.error) {
+                            alert(data.error)
+                        } else {
+                            vm.$router.push({
+                                "name": "services"
+                            });
+                        }
+                    }
+                });
+            },
+            getCustomers: function() {
+                var vm = this;
+                var url = '/api/customers';
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function(data) {
+                        vm.customers = data;
+                    }
+                });
+            },
+            getTypes: function() {
+                var vm = this;
+                var url = '/api/services/types';
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function(data) {
+                        vm.types = data;
+                    }
+                });
+            },
+        },
+        mounted: function() {
+            var vm = this;
+            vm.getCustomers();
+            vm.getTypes();
+            if (vm.$route.params.id) {
+                var url = '/api/services/' + vm.$route.params.id;
+                $.ajax({
+                        method: "GET",
+                        url: url,
+                    })
+                    .done(function(jsonData) {
+                        vm.service = jsonData
+                        vm.title = 'Edit Service';
+                    });
+            } else {
 
+            }
+        }
     }
-  }
-}
 </script>
 
 <style lang="css">
-.contact{
-  background-color: skyblue !important;
-  color:whitesmoke;
-}
-.fa-6x {
-    font-size: 6em;
-}
+    .contact {
+        background-color: skyblue !important;
+        color: whitesmoke;
+    }
+    
+    .fa-6x {
+        font-size: 6em;
+    }
 </style>
