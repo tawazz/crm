@@ -61,28 +61,32 @@
                 <div class="col-md-12">
                   <button class="btn btn-success btn-raised" v-on:click.prevent='saveService'> Save</button>
                   <router-link :to="{name:'services'}" class="btn btn-warning btn-raised"> Cancel</router-link>
-                  <button class="btn btn-danger btn-raised" v-on:click.prevent='deleteService'> Delete </button>
+                  <button class="btn btn-danger btn-raised" v-on:click.prevent='deletePromptBox'> Delete </button>
                 </div>
               </div>
             </form>
           </div>
         </div>
         <loader>Saving service Data...</loader>
+         <confirmbox id="del_ser" :options="deletePrompt"></confirmbox>
       </div>
   </div>
   </div>
 </template>
 
 <script>
-import {$} from '../../hooks.js';
+import {$,bus} from '../../hooks.js';
 import loader from '../../util/loader.vue'
+import confirmbox from '../../util/confirmbox.vue'
 
 export default {
   name:'addservice',
   components:{
-    loader
+    loader,
+    confirmbox
   },
   data:function () {
+    let vm = this;
     return{
       service:{
         id:null,
@@ -95,12 +99,29 @@ export default {
       title:'Add New Service',
       isLoading:false,
       customers:null,
-      types:null
+      types:null,
+      deletePrompt: {
+                icon: "<i class='fa fa-exclamation-triangle fa-2x text-danger' aria-hidden='true'></i>",
+                message: "Are you sure you want to Delete ?",
+                buttons: [{
+                    text: "Delete",
+                    event: "delete",
+                    bsColor: "btn-danger",
+                    handler: function() {
+                        vm.deleteService();
+                    },
+                    autoclose: true
+                }],
+                id:'del_ser'
+            },
     }
   },
   watch:{
   },
   methods:{
+     deletePromptBox:function () {
+      bus.$emit('showAlert', 'del_ser');
+    },
     saveService:function(){
       var vm=this;
       if(!this.service.id){
