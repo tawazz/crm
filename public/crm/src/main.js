@@ -86,8 +86,6 @@ const router = new Router({
 });
 
 const v = new Vue({
-  'router':router,
+  router,
   nprogress
 }).$mount('#app');
-
-console.log(v);
