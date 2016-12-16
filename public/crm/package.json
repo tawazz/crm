@@ -5,11 +5,11 @@
   "author": "tawazz <tawanda.nyakudjga@gmail.com>",
   "private": true,
   "scripts": {
-    "watchify": "watchify -vd -p browserify-hmr -e src/main.js -o ../js/build.js",
+    "watchify": "watchify -vd -p [browserify-hmr -h 0.0.0.0 -p 3020 -u http://$(my-local-ip):3020] -g browserify-css -e src/main.js -o ../js/build.js",
     "serve": "http-server -o -c 1 -a localhost",
     "dev": "npm-run-all --parallel watchify",
     "lint": "eslint --ext .js,.vue src",
-    "build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o ../css/build.css ] -e src/main.js | uglifyjs -c warnings=false -m > ../js/build.js"
+    "build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o ../css/build.css ] -g browserify-css -e src/main.js | uglifyjs -c warnings=false -m > ../js/build.js"
   },
   "browserify": {
     "transform": [
@@ -21,11 +21,16 @@
     "vue": "vue/dist/vue"
   },
   "dependencies": {
+    "bootstrap": "3.3.6",
     "datatables.net": "^1.10.12",
     "datatables.net-bs": "^1.10.12",
     "datatables.net-responsive-bs": "^2.1.0",
+    "formValidate": "^1.0.3",
+    "jquery": "^2.2.4",
     "moment": "^2.15.2",
+    "my-local-ip": "^1.0.0",
     "vue": "^2.0.1",
+    "vue-nprogress": "^0.1.4",
     "vue-router": "^2.0.1"
   },
   "devDependencies": {
@@ -36,6 +41,7 @@
     "babel-runtime": "^6.0.0",
     "babelify": "^7.2.0",
     "browserify": "^13.1.0",
+    "browserify-css": "^0.9.2",
     "browserify-hmr": "^0.3.1",
     "cross-env": "^2.0.0",
     "envify": "^3.4.1",

@@ -17,18 +17,18 @@
         </div>
         <div class="panel panel-default" v-show="!isLoading">
           <div class="panel-body">
-            <form >
+            <form name="addCustomer">
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group ">
                     <label class="control-label" for="inputSuccess2">First Name</label>
-                    <input type="text" class="form-control" v-model="customer.first_name" />
+                    <input type="text" class="form-control" v-model="customer.first_name" required="true" />
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group ">
                     <label class="control-label" for="inputSuccess2">Last Name</label>
-                    <input type="text" class="form-control" v-model="customer.last_name"  />
+                    <input type="text" class="form-control" v-model="customer.last_name" required="true" />
                   </div>
                 </div>
               </div>
@@ -42,7 +42,7 @@
                 <div class="col-md-4">
                   <div class="form-group ">
                     <label class="control-label" for="inputSuccess2">Email</label>
-                    <input type="email" class="form-control" v-model="customer.email"  />
+                    <input type="email" class="form-control" v-model="customer.email" required="true" />
                   </div>
                 </div>
                 <div class="col-md-4">
@@ -85,6 +85,7 @@
     } from '../../hooks.js';
     import loader from '../../util/loader.vue'
     import confirmbox from '../../util/confirmbox.vue'
+    import vd from 'formValidate'
 
     export default {
         name: 'addCustomer',
@@ -95,6 +96,7 @@
         data: function() {
             let vm = this;
             return {
+                form:null,
                 customer: {
                     id: null,
                     first_name: '',
@@ -129,33 +131,34 @@
             },
             saveCustomer: function() {
                 var vm = this;
-                if (!this.customer.id) {
-                    vm.isLoading = true;
-                    $.post("/api/customers", JSON.stringify(this.customer)).done(function(data) {
-                        if (data.error) {
-                            alert(data.error)
-                        } else {
-                            vm.customer = data;
-                        }
-                        vm.isLoading = false;
-                    });
-                } else {
-                    vm.isLoading = true;
-                    $.ajax({
-                        url: "/api/customers/" + this.customer.id,
-                        type: 'PUT',
-                        data: JSON.stringify(vm.customer),
-                        success: function(data) {
+                if (vd.validate(vm.form).isValid) {
+                    if (!this.customer.id) {
+                        vm.isLoading = true;
+                        $.post("/api/customers", JSON.stringify(this.customer)).done(function(data) {
                             if (data.error) {
                                 alert(data.error)
                             } else {
                                 vm.customer = data;
                             }
                             vm.isLoading = false;
-                        }
-                    });
+                        });
+                    } else {
+                        vm.isLoading = true;
+                        $.ajax({
+                            url: "/api/customers/" + this.customer.id,
+                            type: 'PUT',
+                            data: JSON.stringify(vm.customer),
+                            success: function(data) {
+                                if (data.error) {
+                                    alert(data.error)
+                                } else {
+                                    vm.customer = data;
+                                }
+                                vm.isLoading = false;
+                            }
+                        });
+                    }
                 }
-
             },
             deleteCustomer: function() {
                 var vm = this;
@@ -176,6 +179,7 @@
         },
         mounted: function() {
             var vm = this;
+            vm.form = document.forms.addCustomer;
             if (vm.$route.params.id) {
                 var url = '/api/customers/' + vm.$route.params.id;
                 $.ajax({
@@ -196,7 +200,7 @@
         background-color: skyblue !important;
         color: whitesmoke;
     }
-    
+
     .fa-6x {
         font-size: 6em;
     }
