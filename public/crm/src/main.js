@@ -16,7 +16,15 @@ Vue.use(Router);
 Vue.use(NProgress);
 
 global.$ = $
-const nprogress = new NProgress({ parent: '.navbar' })
+const nprogress = new NProgress({
+    parent: '.navbar' ,
+    easing: 'ease',
+    speed: 1000,
+    minimum: 0.1,
+    trickleRate: 0.08,
+    trickleSpeed: 1000,
+    showSpinner: false
+});
 
 const routes = [
         {
