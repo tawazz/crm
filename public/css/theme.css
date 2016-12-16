@@ -12,3 +12,6 @@ footer a:hover {
 .navbar{
   margin-bottom: 0;
 }
+#nprogress .bar {
+  background: #fff;
+}

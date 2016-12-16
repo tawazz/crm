@@ -9,11 +9,22 @@ import services from './components/services/services.vue'
 import addService from './components/services/add-service.vue'
 import vault from './components/vault/vault.vue'
 import add_to_vault from './components/vault/addtovault.vue'
+import NProgress from 'vue-nprogress'
 import Router from 'vue-router'
+var css = require('./hook-css.js');
 Vue.use(Router);
+Vue.use(NProgress);
 
 global.$ = $
-
+const nprogress = new NProgress({
+    parent: '.navbar' ,
+    easing: 'ease',
+    speed: 1000,
+    minimum: 0.1,
+    trickleRate: 0.08,
+    trickleSpeed: 1000,
+    showSpinner: false
+});
 
 const routes = [
         {
@@ -27,7 +38,7 @@ const routes = [
           name:'customers',
         },
         {
-          path:'/dashboard/customers/:id',
+          path:'/dashboard/customers/edit/:id',
           name:'customer',
           component:addCustomer
         },
@@ -74,6 +85,7 @@ const router = new Router({
   'mode': 'history'
 });
 
-new Vue({
-  'router':router
+const v = new Vue({
+  router,
+  nprogress
 }).$mount('#app');
