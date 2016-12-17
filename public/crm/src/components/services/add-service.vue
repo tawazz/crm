@@ -61,7 +61,7 @@
                 <div class="col-md-12">
                   <button class="btn btn-success btn-raised" v-on:click.prevent="saveService"> Save</button>
                   <router-link :to="{name:'services'}" class="btn btn-warning btn-raised"> Cancel</router-link>
-                  <button class="btn btn-danger btn-raised" v-on:click.prevent="deletePromptBox"> Delete </button>
+                  <button class="btn btn-danger btn-raised" v-show="isEdit" v-on:click.prevent="deletePromptBox"> Delete </button>
                 </div>
               </div>
             </form>
@@ -119,7 +119,11 @@
                 },
             }
         },
-        watch: {},
+        computed: {
+            isEdit:function () {
+                return (this.service.id)?true:false;
+            }
+        },
         methods: {
             deletePromptBox: function() {
                 bus.$emit('showAlert', 'del_ser');
@@ -219,7 +223,7 @@
         background-color: skyblue !important;
         color: whitesmoke;
     }
-    
+
     .fa-6x {
         font-size: 6em;
     }

@@ -65,7 +65,7 @@
                 <div class="col-md-12">
                   <button class="btn btn-success btn-raised" v-on:click.prevent="saveCustomer"> Save</button>
                   <router-link :to="{name:'customers'}" class="btn btn-warning btn-raised"> Cancel</router-link>
-                  <button class="btn btn-danger btn-raised" v-on:click.prevent="deletePromptBox"> Delete </button>
+                  <button class="btn btn-danger btn-raised" v-show="isEdit" v-on:click.prevent="deletePromptBox"> Delete </button>
                 </div>
               </div>
             </form>
@@ -124,7 +124,11 @@
                 },
             }
         },
-        watch: {},
+        computed: {
+            isEdit:function () {
+                return (this.customer.id)?true:false;
+            }
+        },
         methods: {
             deletePromptBox: function() {
                 bus.$emit('showAlert', 'del_cus');

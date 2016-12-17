@@ -41,7 +41,7 @@
                           <div class="col-xs-5">
                             <div class="pull-right">
                               <router-link :to="{name:'vault-edit',params:{'id':v.id}}"  class="text-muted"><i class="fa fa-pencil"></i></router-link>
-                              <a href="#" class="text-info"><i class="fa fa-share"></i></a>
+                              <a href="#" class="text-info" @click.prevent="showModal()"><i class="fa fa-share"></i></a>
                               <a href="#" class="text-danger"><i class="fa fa-trash-o"></i></a>
                             </div>
                           </div>
@@ -55,18 +55,24 @@
         </div>
       </div>
     </div>
+    <modal :show="viewModal" @close="closeModal()"></modal>
   </div>
 </template>
 
 <script>
+import modal from '../../util/modal.vue'
 export default {
   name:'vault',
   data:function () {
     return{
       vault:null,
       og_vault:[],
-      search_vault:''
+      search_vault:'',
+      viewModal:false
     };
+  },
+  components:{
+      modal
   },
   watch:{
     search_vault:function () {
@@ -82,7 +88,7 @@ export default {
             vm.vault = $.grep(vm.vault, function( vault ) {
               return (vault.url.toLocaleLowerCase().includes(vm.search_vault.toLocaleLowerCase()) ||
                vault.username.toLocaleLowerCase().includes(vm.search_vault.toLocaleLowerCase()) ||
-               vault.notes.toLocaleLowerCase().includes(vm.search_vault.toLocaleLowerCase()) ||
+               //vault.notes.toLocaleLowerCase().includes(vm.search_vault.toLocaleLowerCase()) ||
                vault.service.name.toLocaleLowerCase().includes(vm.search_vault.toLocaleLowerCase())||
                vault.service.customer.first_name.toLocaleLowerCase().includes(vm.search_vault.toLocaleLowerCase())||
                vault.service.customer.last_name.toLocaleLowerCase().includes(vm.search_vault.toLocaleLowerCase()));
@@ -92,17 +98,24 @@ export default {
     }
   },
   methods:{
-    openVault:function () {
-      let vm =this;
-      $.ajax({
-        method: "GET",
-        url: '/api/vault',
-      })
-      .done(function( jsonData) {
-          vm.vault = jsonData;
-          vm.og_vault = vm.vault;
-      });
-    }
+        openVault:function () {
+          let vm =this;
+          $.ajax({
+            method: "GET",
+            url: '/api/vault',
+          })
+          .done(function( jsonData) {
+              vm.vault = jsonData;
+              vm.og_vault = vm.vault;
+          });
+      },
+      showModal:function () {
+          this.viewModal = true;
+      },
+      closeModal:function () {
+          this.viewModal = false;
+      }
+
   },
   mounted:function () {
     let vm = this;

@@ -17,12 +17,12 @@
         </div>
         <div class="panel panel-default" v-show="!isLoading">
           <div class="panel-body">
-            <form >
+            <form name="addtovault">
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group ">
                     <label class="control-label" >URL</label>
-                    <input type="text" class="form-control" v-model="vault.url" />
+                    <input type="text" class="form-control" v-model="vault.url" required="true" />
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -31,7 +31,7 @@
                     <select class="form-control" v-show="!services.length > 0">
                       <option>Loading...</option>
                     </select>
-                    <select v-if="services.length > 0"class="form-control" v-model="vault.service_id">
+                    <select v-if="services.length > 0"class="form-control" v-model="vault.service_id" required="true">
                       <option v-for="service in services" :value="service.id">{{service.name}}</option>
                     </select>
                   </div>
@@ -41,19 +41,19 @@
                 <div class="col-md-6">
                   <div class="form-group ">
                     <label class="control-label" for="inputSuccess2">username</label>
-                    <input type="text" class="form-control" v-model="vault.username">
+                    <input type="text" class="form-control" v-model="vault.username" required="true">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group ">
                     <label class="control-label" for="inputSuccess2">password</label>
-                    <input type="password" class="form-control" v-model="vault.password"  />
+                    <input type="password" class="form-control" v-model="vault.password" required="true" />
                   </div>
                 </div>
                 <div class="col-md-12">
                   <div class="form-group ">
                     <label class="control-label" for="inputSuccess2">Notes</label>
-                    <textarea class="form-control" v-model="vault.notes"  />
+                    <textarea class="form-control" v-model="vault.notes" />
                   </div>
                 </div>
               </div>
@@ -62,7 +62,7 @@
                 <div class="col-md-12">
                   <button class="btn btn-success btn-raised" v-on:click.prevent='saveVault'> Save</button>
                   <router-link :to="{name:'vault'}" class="btn btn-warning btn-raised"> Cancel</router-link>
-                  <button class="btn btn-danger btn-raised" v-on:click.prevent='deleteVault'> Delete </button>
+                  <button class="btn btn-danger btn-raised" v-show="isEdit" v-on:click.prevent='deleteVault'> Delete </button>
                 </div>
               </div>
             </form>
@@ -77,6 +77,7 @@
 <script>
 import {$} from '../../hooks.js';
 import loader from '../../util/loader.vue'
+import vd from 'formValidate'
 
 export default {
   name:'addtovault',
@@ -92,42 +93,48 @@ export default {
       isLoading:false,
       customers:null,
       types:null,
-      services:{}
+      services:{},
+      form:null
     }
   },
-  watch:{
+  computed:{
+      isEdit:function () {
+          return (this.vault.id)?true:false;
+      }
   },
   methods:{
     saveVault:function(){
       var vm=this;
-      if(!this.vault.id){
-        vm.isLoading = true;
-        $.post( "/api/vault",JSON.stringify(this.vault))
-        . done(function( data ) {
-          vm.vault = data;
-          vm.isLoading = false;
-          vm.$router.push({name:'vault'});
-        })
-        .fail(function (data) {
-            alert(data.error)
-        });
-      }else{
-        vm.isLoading = true;
-        delete vm.vault.service;
-        $.ajax({
-           url: "/api/vault/"+this.vault.id,
-           type: 'PUT',
-           data: JSON.stringify(vm.vault),
-           success: function(data) {
-             if(data.error){
-               alert(data.error)
-             }else{
-               vm.vault = data;
-             }
-             vm.isLoading = false;
-             vm.$router.push({name:'vault'});
-           }
-        });
+      if (vd.validate(vm.form).isValid) {
+          if(!this.vault.id){
+            vm.isLoading = true;
+            $.post( "/api/vault",JSON.stringify(this.vault))
+            . done(function( data ) {
+              vm.vault = data;
+              vm.isLoading = false;
+              vm.$router.push({name:'vault'});
+            })
+            .fail(function (data) {
+                alert(data.error)
+            });
+          }else{
+            vm.isLoading = true;
+            delete vm.vault.service;
+            $.ajax({
+               url: "/api/vault/"+this.vault.id,
+               type: 'PUT',
+               data: JSON.stringify(vm.vault),
+               success: function(data) {
+                 if(data.error){
+                   alert(data.error)
+                 }else{
+                   vm.vault = data;
+                 }
+                 vm.isLoading = false;
+                 vm.$router.push({name:'vault'});
+               }
+            });
+          }
       }
 
     },
@@ -175,6 +182,7 @@ export default {
   },
   mounted:function () {
     var vm = this;
+    vm.form = document.forms.addtovault;
     vm.fetchVault();
     vm.getServices();
   }
