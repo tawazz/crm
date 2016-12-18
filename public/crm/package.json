@@ -9,7 +9,7 @@
     "serve": "http-server -o -c 1 -a localhost",
     "dev": "npm-run-all --parallel watchify",
     "lint": "eslint --ext .js,.vue src",
-    "build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o ../css/build.css ] -g browserify-css -e src/main.js | uglifyjs -c warnings=false -m > ../js/build.js"
+    "build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o ../css/build.css ] -g browserify-css -e src/main.js -o ../js/build.js"
   },
   "browserify": {
     "transform": [
