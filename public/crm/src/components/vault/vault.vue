@@ -41,7 +41,7 @@
                           <div class="col-xs-5">
                             <div class="pull-right">
                               <router-link :to="{name:'vault-edit',params:{'id':v.id}}"  class="text-muted"><i class="fa fa-pencil"></i></router-link>
-                              <a href="#" class="text-info" @click.prevent="showModal()"><i class="fa fa-share"></i></a>
+                              <a href="#" class="text-info" @click.prevent="showModal()"><i class="fa fa-eye"></i></a>
                               <a href="#" class="text-danger"><i class="fa fa-trash-o"></i></a>
                             </div>
                           </div>
