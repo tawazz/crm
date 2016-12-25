@@ -55,7 +55,7 @@ export default {
         {
           title:"Billing",
           description : "view and manage charges",
-          icon : "fa-credit-card-alt"
+          icon : "fa-credit-card-alt",
         },
         {
           title:"Vault",
@@ -66,7 +66,7 @@ export default {
         {
           title:"Servers",
           description : "view and manage servers",
-          icon : "fa-desktop"
+          icon : "fa-desktop",
         },
         {
           title:"Accounting",

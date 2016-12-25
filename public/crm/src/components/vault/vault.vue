@@ -35,12 +35,13 @@
                         <div class="panel-body" style="padding:0;">
                           <div class="col-xs-7">
                             <small class="text-primary">{{v.url}}</small><br/>
-                            <small>{{v.service.customer.first_name}} {{v.service.customer.last_name}}</small>
+                            <small>{{v.service.customer.first_name}} {{v.service.customer.last_name}}</small><br>
+                            <small>{{v.notes}}</small>
                           </div>
                           <div class="col-xs-5">
                             <div class="pull-right">
                               <router-link :to="{name:'vault-edit',params:{'id':v.id}}"  class="text-muted"><i class="fa fa-pencil"></i></router-link>
-                              <a href="#" class="text-info"><i class="fa fa-share"></i></a>
+                              <a href="#" class="text-info" @click.prevent="showModal(v)"><i class="fa fa-eye"></i></a>
                               <a href="#" class="text-danger"><i class="fa fa-trash-o"></i></a>
                             </div>
                           </div>
@@ -54,18 +55,64 @@
         </div>
       </div>
     </div>
+    <modal :show="viewModal" @close="closeModal()" :title="selected_vault.service.name">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="username">url</label>
+                  <input type="text" class="form-control"  readonly="readonly" :value="selected_vault.url">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+              <div class="form-group">
+                <label for="username">username</label>
+                <input type="text" class="form-control"  readonly="readonly" :value="selected_vault.username">
+              </div>
+          </div>
+          <div class="col-sm-6">
+              <div class="form-group">
+                <label for="username">password</label>
+                <div class="input-group">
+                  <input type="text" v-show="showPassword" class="form-control"  readonly="readonly" :value="selected_vault.password">
+                  <input type="password"  v-show="!showPassword" class="form-control"  readonly="readonly" :value="selected_vault.password">
+                  <span class="input-group-addon"><i :class="{'fa-eye':!showPassword, 'fa-eye-slash':showPassword}" class="fa eye"></i></span>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="">Notes</label>
+                  <textarea class="form-control">{{selected_vault.notes}}</textarea>
+                </div>
+            </div>
+        </div>
+    </modal>
   </div>
 </template>
 
 <script>
+import modal from '../../util/modal.vue'
 export default {
   name:'vault',
   data:function () {
     return{
       vault:null,
       og_vault:[],
-      search_vault:''
+      search_vault:'',
+      viewModal:false,
+      selected_vault:{
+          service:{},
+          customer:{}
+      },
+      showPassword:false
     };
+  },
+  components:{
+      modal
   },
   watch:{
     search_vault:function () {
@@ -81,7 +128,7 @@ export default {
             vm.vault = $.grep(vm.vault, function( vault ) {
               return (vault.url.toLocaleLowerCase().includes(vm.search_vault.toLocaleLowerCase()) ||
                vault.username.toLocaleLowerCase().includes(vm.search_vault.toLocaleLowerCase()) ||
-               vault.notes.toLocaleLowerCase().includes(vm.search_vault.toLocaleLowerCase()) ||
+               //vault.notes.toLocaleLowerCase().includes(vm.search_vault.toLocaleLowerCase()) ||
                vault.service.name.toLocaleLowerCase().includes(vm.search_vault.toLocaleLowerCase())||
                vault.service.customer.first_name.toLocaleLowerCase().includes(vm.search_vault.toLocaleLowerCase())||
                vault.service.customer.last_name.toLocaleLowerCase().includes(vm.search_vault.toLocaleLowerCase()));
@@ -91,24 +138,43 @@ export default {
     }
   },
   methods:{
-    openVault:function () {
-      let vm =this;
-      $.ajax({
-        method: "GET",
-        url: '/api/vault',
-      })
-      .done(function( jsonData) {
-          vm.vault = jsonData;
-          vm.og_vault = vm.vault;
-      });
-    }
+        openVault:function () {
+          let vm =this;
+          $.ajax({
+            method: "GET",
+            url: '/api/vault',
+          })
+          .done(function( jsonData) {
+              vm.vault = jsonData;
+              vm.og_vault = vm.vault;
+          });
+      },
+      showModal:function (v) {
+          this.selected_vault = v;
+          this.viewModal = true;
+      },
+      closeModal:function () {
+          this.selected_vault = {
+               service:{},
+               customer:{}
+           };
+          this.showPassword =false;
+          this.viewModal = false;
+      }
+
   },
   mounted:function () {
     let vm = this;
     vm.openVault();
+    $('.eye').on('click',function (e) {
+        vm.showPassword = !vm.showPassword;
+    });
   }
 }
 </script>
 
 <style lang="css">
+.eye{
+    cursor: pointer;
+}
 </style>
