@@ -41,7 +41,7 @@
                           <div class="col-xs-5">
                             <div class="pull-right">
                               <router-link :to="{name:'vault-edit',params:{'id':v.id}}"  class="text-muted"><i class="fa fa-pencil"></i></router-link>
-                              <a href="#" class="text-info" @click.prevent="showModal()"><i class="fa fa-eye"></i></a>
+                              <a href="#" class="text-info" @click.prevent="showModal(v)"><i class="fa fa-eye"></i></a>
                               <a href="#" class="text-danger"><i class="fa fa-trash-o"></i></a>
                             </div>
                           </div>
@@ -55,7 +55,44 @@
         </div>
       </div>
     </div>
-    <modal :show="viewModal" @close="closeModal()"></modal>
+    <modal :show="viewModal" @close="closeModal()" :title="selected_vault.service.name">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="username">url</label>
+                  <input type="text" class="form-control"  readonly="readonly" :value="selected_vault.url">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+              <div class="form-group">
+                <label for="username">username</label>
+                <input type="text" class="form-control"  readonly="readonly" :value="selected_vault.username">
+              </div>
+          </div>
+          <div class="col-sm-6">
+              <div class="form-group">
+                <label for="username">password</label>
+                <div class="input-group">
+                  <input type="text" v-show="showPassword" class="form-control"  readonly="readonly" :value="selected_vault.password">
+                  <input type="password"  v-show="!showPassword" class="form-control"  readonly="readonly" :value="selected_vault.password">
+                  <span class="input-group-addon"><i :class="{'fa-eye':!showPassword, 'fa-eye-slash':showPassword}" class="fa eye"></i></span>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="">Notes</label>
+                  <textarea class="form-control">
+                      {{selected_vault.notes}}
+                  </textarea>
+                </div>
+            </div>
+        </div>
+    </modal>
   </div>
 </template>
 
@@ -68,7 +105,12 @@ export default {
       vault:null,
       og_vault:[],
       search_vault:'',
-      viewModal:false
+      viewModal:false,
+      selected_vault:{
+          service:{},
+          customer:{}
+      },
+      showPassword:false
     };
   },
   components:{
@@ -109,10 +151,16 @@ export default {
               vm.og_vault = vm.vault;
           });
       },
-      showModal:function () {
+      showModal:function (v) {
+          this.selected_vault = v;
           this.viewModal = true;
       },
       closeModal:function () {
+          this.selected_vault = {
+               service:{},
+               customer:{}
+           };
+          this.showPassword =false;
           this.viewModal = false;
       }
 
@@ -120,9 +168,15 @@ export default {
   mounted:function () {
     let vm = this;
     vm.openVault();
+    $('.eye').on('click',function (e) {
+        vm.showPassword = !vm.showPassword;
+    });
   }
 }
 </script>
 
 <style lang="css">
+.eye{
+    cursor: pointer;
+}
 </style>
