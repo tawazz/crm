@@ -62,29 +62,33 @@
                 <div class="col-md-12">
                   <button class="btn btn-success btn-raised" v-on:click.prevent='saveVault'> Save</button>
                   <router-link :to="{name:'vault'}" class="btn btn-warning btn-raised"> Cancel</router-link>
-                  <button class="btn btn-danger btn-raised" v-show="isEdit" v-on:click.prevent='deleteVault'> Delete </button>
+                  <button class="btn btn-danger btn-raised" v-show="isEdit" v-on:click.prevent='deletePromptBox'> Delete </button>
                 </div>
               </div>
             </form>
           </div>
         </div>
         <loader>Saving Vault Data...</loader>
+        <confirmbox id="deleteVault" :options="deletePrompt"></confirmbox>
       </div>
   </div>
   </div>
 </template>
 
 <script>
-import {$} from '../../hooks.js';
+import {$,bus} from '../../hooks.js';
 import loader from '../../util/loader.vue'
+import confirmbox from '../../util/confirmbox.vue'
 import vd from 'formValidate'
 
 export default {
   name:'addtovault',
   components:{
-    loader
+    loader,
+    confirmbox
   },
   data:function () {
+      let vm =this;
     return{
       vault:{
 
@@ -94,7 +98,21 @@ export default {
       customers:null,
       types:null,
       services:{},
-      form:null
+      form:null,
+      deletePrompt: {
+          icon: "<i class='fa fa-exclamation-triangle fa-2x text-danger' aria-hidden='true'></i>",
+          message: "Are you sure you want to Delete ?",
+          buttons: [{
+              text: "Delete",
+              event: "delete",
+              bsColor: "btn-danger",
+              handler: function() {
+                  vm.deleteVault();
+              },
+              autoclose: true
+          }],
+          id: 'deleteVault'
+      },
     }
   },
   computed:{
@@ -103,6 +121,9 @@ export default {
       }
   },
   methods:{
+    deletePromptBox: function() {
+      bus.$emit('showAlert', 'deleteVault');
+    },
     saveVault:function(){
       var vm=this;
       if (vd.validate(vm.form).isValid) {
