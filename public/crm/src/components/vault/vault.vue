@@ -86,7 +86,7 @@
             <div class="col-sm-12">
                 <div class="form-group">
                   <label for="">Notes</label>
-                  <textarea class="form-control">{{selected_vault.notes}}</textarea>
+                  <textarea class="form-control" readonly="readonly">{{selected_vault.notes}}</textarea>
                 </div>
             </div>
         </div>
