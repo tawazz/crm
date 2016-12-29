@@ -36,6 +36,9 @@ class Before extends Middleware{
       return ($host) ? "http://".$_SERVER['HTTP_HOST'].$app->baseUrl."/public/".$path : $app->baseUrl."/public/".$path ;
     });
 
+    $twig->addFunction( new \Twig_SimpleFunction('dump', function ($var){
+        dump($var);
+    }));
     $twig->addFunction($function);
   }
 

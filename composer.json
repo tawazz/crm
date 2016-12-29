@@ -5,7 +5,8 @@
         "slim/views": "0.1.*",
         "illuminate/database": "^5.3",
         "illuminate/events": "^5.3",
-        "robmorgan/phinx": "^0.6.4"
+        "robmorgan/phinx": "^0.6.4",
+        "symfony/var-dumper": "^3.2"
     },
     "autoload":{
       "psr-4":{

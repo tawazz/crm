@@ -4,8 +4,7 @@
   require_once 'app/config/db.config.php';
   require_once 'Tazzy-Helpers/autoload.php';
   use Slim\Slim;
-  use HTTP\MiddleWare\Before;
-  use HTTP\MiddleWare\Csrf;
+  use HTTP\MiddleWare\{Before,Dump,Csrf};
   $app = new Slim([
     'view'=> new \Slim\Views\Twig(),
     'debug'=> Settings::get('debug'),
@@ -27,6 +26,7 @@
     "email"    => Settings::get('locale.email'),
   ]);
   //Middleware
+  $app->add(new Dump());
   $app->add(new Before());
   $app->add(new Csrf());
   require 'app/HTTP/MiddleWare/auth_filters.php';
