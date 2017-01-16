@@ -16,7 +16,7 @@ class Before extends Middleware{
     $this->app->baseUrl = $this->app->request->getScriptName();
     $this->app->referrer = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : null;
     $this->IncludeTwigHelpers();
-    #$this->UserSessionHelper();
+    $this->UserSessionHelper();
     #$this->CachingHelper();
   }
 
@@ -44,15 +44,25 @@ class Before extends Middleware{
 
   public function UserSessionHelper()
   {
-    if($this->app->session->exists('id')){
-      $user = $this->app->User;
-      if($user->read($this->app->session->get('id'))){
-        $this->app->auth = $user->get();
+      $app = $this->app;
+      try {
+          $access_token = $app->getCookie('access_token');
+          $userRequest = $this->app->Http->request('GET',"http://10.6.209.19/tazzy_auth/auth/user/{$access_token}");
+          $response = json_decode($userRequest->getBody()->getContents());
+
+          if($response->authenticated){
+              $user = $response->user;
+              $this->app->auth = $user;
+              $this->app->view()->appendData([
+                  "auth"=>$user
+              ]);
+          }
+
+      } catch (\Exception $e) {
+          if($e->getResponse()->getStatusCode() == 403 || $e->getResponse()->getStatusCode() == 404 ){
+              $app->response->redirect('http://10.6.209.19/tazzy_auth/authorize?redirect_url=http://crm/authorize&response=code');
+          }
       }
-      $this->app->view()->appendData([
-          "auth"=>$this->app->auth
-      ]);
-    }
   }
 
   public function CachingHelper()

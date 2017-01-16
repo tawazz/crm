@@ -6,7 +6,8 @@
         "illuminate/database": "^5.3",
         "illuminate/events": "^5.3",
         "robmorgan/phinx": "^0.6.4",
-        "symfony/var-dumper": "^3.2"
+        "symfony/var-dumper": "^3.2",
+        "guzzlehttp/guzzle": "^6.2"
     },
     "autoload":{
       "psr-4":{

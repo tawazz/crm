@@ -5,6 +5,7 @@
   require_once 'Tazzy-Helpers/autoload.php';
   use Slim\Slim;
   use HTTP\MiddleWare\{Before,Dump,Csrf};
+  use GuzzleHttp\Client as HTTP;
   $app = new Slim([
     'view'=> new \Slim\Views\Twig(),
     'debug'=> Settings::get('debug'),
@@ -42,12 +43,20 @@
   $app->container->singleton('Config',function(){
     return  new Settings();
   });
+  $app->container->singleton('Http',function() use ($app){
+    return  new HTTP([
+      'allow_redirects' => true,
+      //'proxy' => "localhost:8888"
+    ]);
+  });
+  //System VarnishAdmin
+  $app->auth = null;
   //Models
-
   require 'app/HTTP/Models/Models.php';
 
   //routes
   require'app/routes/routes.php';
 
   $app->run();
+  dump($app->auth)
  ?>

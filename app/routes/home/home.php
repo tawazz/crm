@@ -1,5 +1,5 @@
 <?php
-  $app->get('/',function() use ($app){
+  $app->get('/',$require_login,function() use ($app){
     $app->render('home/home.php');
   })->name('home');
 
@@ -31,5 +31,17 @@
       $app->flash("global","your message was sent");
       $app->response->redirect($app->urlFor('contact'));
   })->name('post.contact');
+
+  $app->get('/authorize',function() use ($app){
+      $access_token = $app->request->get('access_token');
+      if($access_token){
+          $app->setCookie('access_token',$access_token);
+          $app->access_token = $access_token;
+          $app->response->redirect($app->urlFor('home'));
+      }else{
+          $app->response->redirect('http://10.6.209.19/tazzy_auth/authorize?redirect_url=http://crm/authorize&response=code');
+      }
+  })->name('authorize');
+
 
  ?>
