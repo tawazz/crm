@@ -24,7 +24,7 @@
   $app->get('/dashboard/vault',function() use ($app) {
     $app->render('home/home.php');
   })->name('dash.vault');
-  $app->get('/:dashboard+',function($args) use ($app) {
+  $app->get('/dashboard/+',function($args) use ($app) {
     $app->render('home/home.php');
-  });
+});
  ?>

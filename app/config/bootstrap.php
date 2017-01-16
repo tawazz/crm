@@ -49,8 +49,8 @@
       //'proxy' => "localhost:8888"
     ]);
   });
-  //System VarnishAdmin
-  $app->auth = null;
+  //System Vars
+  $app->auth = false;
   //Models
   require 'app/HTTP/Models/Models.php';
 

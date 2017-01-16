@@ -46,11 +46,17 @@ class Before extends Middleware{
   {
       $app = $this->app;
       try {
-          $access_token = $app->getCookie('access_token');
+          if($app->request->get('access_token')){
+              $access_token = $app->request->get('access_token');
+          }else{
+              $access_token = $app->getCookie('access_token');
+          }
+
           $userRequest = $this->app->Http->request('GET',"http://10.6.209.19/tazzy_auth/auth/user/{$access_token}");
           $response = json_decode($userRequest->getBody()->getContents());
 
           if($response->authenticated){
+              $app->setCookie('access_token',$access_token);
               $user = $response->user;
               $this->app->auth = $user;
               $this->app->view()->appendData([

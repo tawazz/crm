@@ -10,7 +10,7 @@
     return function() use($app){
       if(!$app->auth && TRUE){
         $app->flash('global','Login required to access the resource');
-        $app->redirect($app->urlFor('login'));
+        $app->redirect('http://10.6.209.19/tazzy_auth/authorize?redirect_url=http://crm/authorize&response=code');
       }
     };
   };
