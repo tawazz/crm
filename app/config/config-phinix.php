@@ -2,7 +2,8 @@
 require_once __DIR__.'/../../app/config/settings.php';
 return [
   'paths' => [
-    'migrations' => __DIR__.'/../../migrations'
+    'migrations' => __DIR__.'/../../migrations',
+    'seeds' => __DIR__.'/../../seeds'
   ],
   'migration_base_class' => '\HTTP\Migrations\Migration',
   'environments' => [

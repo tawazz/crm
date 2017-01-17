@@ -58,5 +58,4 @@
   require'app/routes/routes.php';
 
   $app->run();
-  dump($app->auth)
  ?>

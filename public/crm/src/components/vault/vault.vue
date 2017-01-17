@@ -74,7 +74,7 @@
               <div class="form-group">
                 <label for="username">password</label>
                 <div class="input-group">
-                  <input type="text" v-show="showPassword" class="form-control"  readonly="readonly" :value="selected_vault.password">
+                  <input type="text" v-show="showPassword" class="form-control"  readonly="readonly" :value="selected_vault.password|base64_decode">
                   <input type="password"  v-show="!showPassword" class="form-control"  readonly="readonly" :value="selected_vault.password">
                   <span class="input-group-addon"><i :class="{'fa-eye':!showPassword, 'fa-eye-slash':showPassword}" class="fa eye"></i></span>
                 </div>
@@ -112,6 +112,13 @@ export default {
   },
   components:{
       modal
+  },
+  filters:{
+        base64_decode:function (val) {
+            if(val){
+                return atob(val);
+            }
+        }
   },
   watch:{
     search_vault:function () {

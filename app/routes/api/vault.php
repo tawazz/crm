@@ -6,7 +6,7 @@
       try {
         $vault = $app->Vault->openVault();
         $res->isOk();
-        echo json_encode($vault);
+        $res->setBody(json_encode($vault));
       } catch (Exception $e) {
         $res->setStatus(400);
         echo json_encode([
@@ -89,6 +89,7 @@
     $app->post('/vault',function() use ($app) {
       $body = $app->request->getBody();
       $body = json_decode($body,true);
+      $body->password = base64_encode($body->password);
       $vault = $app->Vault->create($body);
       $vault->save();
 
