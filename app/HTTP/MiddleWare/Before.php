@@ -53,7 +53,7 @@ class Before extends Middleware{
               $access_token = $app->getCookie('access_token');
           }
           if($access_token){
-              $userRequest = $this->app->Http->request('GET',"http://10.6.209.19/tazzy_auth/auth/user/{$access_token}");
+              $userRequest = $this->app->Http->request('GET',$app->Config->get("auth.server")."/auth/user/{$access_token}");
               $response = json_decode($userRequest->getBody()->getContents());
               if($response && $response->authenticated){
                   $user = $response->user;
@@ -63,14 +63,14 @@ class Before extends Middleware{
                   ]);
               }
           }else{
-              $app->response->redirect('http://10.6.209.19/tazzy_auth/authorize?redirect_url=http://crm/authorize&response=code');
+              $app->response->redirect($app->Config->get("auth.server").'/authorize?redirect_url=http://crm/authorize&response=code');
               return 0;
           }
 
 
       } catch (\Exception $e) {
           if($e->getResponse()->getStatusCode() == 403 ){
-              $app->response->redirect('http://10.6.209.19/tazzy_auth/authorize?redirect_url=http://crm/authorize&response=code');
+              $app->response->redirect($app->Config->get("auth.server").'/authorize?redirect_url=http://crm/authorize&response=code');
               return 0;
           }
       }

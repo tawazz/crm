@@ -19,6 +19,9 @@
           "address"  => "Some <br> Place",
           "phone"    => "+61 401 234 567",
           "email"    => "admin@example.com",
+      ],
+      'auth'         => [
+          "server"   => "http://localhost/tazzy_auth",
       ]
   ];
  ?>
