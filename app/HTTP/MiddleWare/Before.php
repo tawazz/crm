@@ -48,25 +48,30 @@ class Before extends Middleware{
       try {
           if($app->request->get('access_token')){
               $access_token = $app->request->get('access_token');
+              $app->setCookie('access_token',$access_token);
           }else{
               $access_token = $app->getCookie('access_token');
           }
-
-          $userRequest = $this->app->Http->request('GET',"http://10.6.209.19/tazzy_auth/auth/user/{$access_token}");
-          $response = json_decode($userRequest->getBody()->getContents());
-
-          if($response->authenticated){
-              $app->setCookie('access_token',$access_token);
-              $user = $response->user;
-              $this->app->auth = $user;
-              $this->app->view()->appendData([
-                  "auth"=>$user
-              ]);
+          if($access_token){
+              $userRequest = $this->app->Http->request('GET',"http://10.6.209.19/tazzy_auth/auth/user/{$access_token}");
+              $response = json_decode($userRequest->getBody()->getContents());
+              if($response && $response->authenticated){
+                  $user = $response->user;
+                  $this->app->auth = $user;
+                  $this->app->view()->appendData([
+                      "auth"=>$user
+                  ]);
+              }
+          }else{
+              $app->response->redirect('http://10.6.209.19/tazzy_auth/authorize?redirect_url=http://crm/authorize&response=code');
+              return 0;
           }
 
+
       } catch (\Exception $e) {
-          if($e->getResponse()->getStatusCode() == 403 || $e->getResponse()->getStatusCode() == 404 ){
+          if($e->getResponse()->getStatusCode() == 403 ){
               $app->response->redirect('http://10.6.209.19/tazzy_auth/authorize?redirect_url=http://crm/authorize&response=code');
+              return 0;
           }
       }
   }
