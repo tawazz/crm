@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__.'/../../app/config/settings.php';
+require_once __DIR__.'/settings.php';
 return [
   'paths' => [
     'migrations' => __DIR__.'/../../migrations',
