@@ -6,6 +6,7 @@ var DataTable = require( 'datatables.net' )();
 var DataTableBs = require( 'datatables.net-bs' )();
 var DataTableRes = require( 'datatables.net-responsive-bs' )();
 var Moment = require('moment');
+var Datepicker = require('eonasdan-bootstrap-datetimepicker');
 import {bus} from './util/eventBus.js';
 export {
     $,
@@ -13,5 +14,6 @@ export {
     DataTableBs,
     DataTableRes,
     Moment,
-    bus
+    bus,
+    Datepicker
 }

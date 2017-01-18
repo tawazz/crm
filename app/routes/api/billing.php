@@ -16,13 +16,13 @@
 
     })->name('api.get.bill');
 
-    $app->get('/bill/types',function() use ($app) {
+    $app->get('/bill/status',function() use ($app) {
       $res = $app->response;
       $res->headers->set('Content-Type', 'application/json');
       try {
-        $bill = $app->bill->getTypesOptions();
+        $status = $app->Billing->getTypesOptions();
         $res->isOk();
-        echo json_encode($bill);
+        echo json_encode($status);
       } catch (Exception $e) {
         $res->setStatus(400);
         echo json_encode([

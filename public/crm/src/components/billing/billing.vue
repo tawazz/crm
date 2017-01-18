@@ -88,7 +88,7 @@ export default {
     vm.$children[2].vmDataTable.on('click','a[data-edit]',function (event) {
       event.preventDefault
       var id = $(this).attr('data-edit');
-      vm.$router.push({name:'service',params:{id:id}});
+      vm.$router.push({name:'edit_bill',params:{id:id}});
     });
 
   }

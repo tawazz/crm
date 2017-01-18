@@ -32,6 +32,10 @@
     {
         return $this->belongsTo('HTTP\Models\Customer');
     }
+    public static function getTypesOptions(){
+      $options = Billing::getPossbileEnumValues('status');
+      return $options;
+    }
 
   }
 
