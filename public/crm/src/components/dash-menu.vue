@@ -56,6 +56,7 @@ export default {
           title:"Billing",
           description : "view and manage charges",
           icon : "fa-credit-card-alt",
+          url:"/dashboard/billing"
         },
         {
           title:"Vault",

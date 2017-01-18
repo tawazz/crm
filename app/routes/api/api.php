@@ -3,6 +3,7 @@
         require 'services.php';
         require 'customers.php';
         require 'vault.php';
+        require 'billing.php';
     });
 
  ?>

@@ -9,4 +9,7 @@
   $app->container->set('Vault',function(){
     return new HTTP\Models\Vault();
   });
+  $app->container->set('Billing',function(){
+    return new HTTP\Models\Billing();
+  });
  ?>

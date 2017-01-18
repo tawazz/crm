@@ -9,6 +9,9 @@ import services from './components/services/services.vue'
 import addService from './components/services/add-service.vue'
 import vault from './components/vault/vault.vue'
 import add_to_vault from './components/vault/addtovault.vue'
+import billing from './components/billing/billing.vue'
+import invoice from './components/billing/invoice.vue'
+import addBill from './components/billing/add-bill.vue'
 import NProgress from 'vue-nprogress'
 import Router from 'vue-router'
 var css = require('./hook-css.js');
@@ -76,6 +79,26 @@ const routes = [
           path:'/dashboard/vault/:id',
           name:'vault-edit',
           component:add_to_vault
+        },
+        {
+          path:'/dashboard/billing',
+          name:'billing',
+          component:billing
+        },
+        {
+          path:'/dashboard/billing/add',
+          name:'add_bill',
+          component:addBill
+        },
+        {
+          path:'/dashboard/billing/edit/:id',
+          name:'edit_bill',
+          component:addBill
+        },
+        {
+          path:'/dashboard/billing/invoice/:id',
+          name:'invoice',
+          component:invoice
         },
 
 ];
