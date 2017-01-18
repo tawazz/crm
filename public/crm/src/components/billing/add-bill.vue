@@ -132,6 +132,7 @@
                     }],
                     id: 'del_bill'
                 },
+                billDatepicker:null
             }
         },
         computed: {
@@ -220,29 +221,34 @@
               });
           },
           getStatus:function () {
-            var vm = this;
-            var url = '/api/bill/status';
-            $.ajax({
-               url: url,
-               type: 'GET',
-               success: function(data) {
-                 vm.status=data;
-               }
-            });
-        }
+                var vm = this;
+                var url = '/api/bill/status';
+                $.ajax({
+                   url: url,
+                   type: 'GET',
+                   success: function(data) {
+                     vm.status=data;
+                   }
+                });
+            },
+            handleEvents:function () {
+                let vm = this;
+                vm.billDatepicker = $("#bill-date").datetimepicker({
+                    format: 'ddd MMM Do, YYYY',
+                    showClear:true,
+                });
+
+                vm.billDatepicker.on('dp.change',function (e) {
+                    vm.bill.payed_on = vm.billDatepicker.data('DateTimePicker').date().format('YYYY-MM-DD');
+                })
+            }
         },
         mounted: function() {
             var vm = this;
             vm.getCustomers();
             vm.getServices();
             vm.getStatus();
-            $("#bill-date").datetimepicker({
-                format: 'dddd MMM Do, YYYY',
-                showClear:true,
-            });
-            $("#bill-date").on('dp.change',function (e) {
-                vm.bill.payed_on = $("#bill-date").data('DateTimePicker').date().format('YYYY-MM-DD');
-            })
+            vm.handleEvents();
             if (vm.$route.params.id) {
                 var url = '/api/bills/' + vm.$route.params.id;
                 $.ajax({
