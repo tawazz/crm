@@ -46,13 +46,13 @@
                 <div class="col-md-4">
                   <div class="form-group ">
                     <label class="control-label" for="inputSuccess2">Service Started</label>
-                    <input type="date" class="form-control" v-model="service.service_start"  />
+                    <input type="text" id="service_start" class="form-control"   />
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group ">
                     <label class="control-label" for="inputSuccess2">Service Ended</label>
-                    <input type="date" class="form-control" v-model="service.service_end"  />
+                    <input type="text" id="service_end" class="form-control"  />
                   </div>
                 </div>
               </div>
@@ -77,7 +77,8 @@
 <script>
     import {
         $,
-        bus
+        bus,
+        Datepicker
     } from '../../hooks.js';
     import loader from '../../util/loader.vue'
     import confirmbox from '../../util/confirmbox.vue'
@@ -117,6 +118,8 @@
                     }],
                     id: 'del_ser'
                 },
+                serviceStartDatepicker:null,
+                serviceEndDatepicker:null
             }
         },
         computed: {
@@ -196,11 +199,32 @@
                     }
                 });
             },
+            handleEvents:function () {
+                let vm = this;
+                vm.serviceStartDatepicker = $("#service_start").datetimepicker({
+                    format: 'ddd MMM Do, YYYY',
+                    showClear:true,
+                });
+                vm.serviceEndDatepicker = $("#service_end").datetimepicker({
+                    format: 'ddd MMM Do, YYYY',
+                    showClear:true,
+                });
+
+                vm.serviceStartDatepicker.on('dp.change',function (e) {
+                    vm.service.service_start = vm.serviceStartDatepicker.data('DateTimePicker').date().format('YYYY-MM-DD');
+                    vm.serviceEndDatepicker.data("DateTimePicker").minDate(e.date);
+                });
+
+                vm.serviceEndDatepicker.on('dp.change',function (e) {
+                    vm.service.service_end = vm.serviceEndDatepicker.data('DateTimePicker').date().format('YYYY-MM-DD');
+                });
+            }
         },
         mounted: function() {
             var vm = this;
             vm.getCustomers();
             vm.getTypes();
+            vm.handleEvents();
             if (vm.$route.params.id) {
                 var url = '/api/services/' + vm.$route.params.id;
                 $.ajax({
@@ -210,6 +234,8 @@
                     .done(function(jsonData) {
                         vm.service = jsonData
                         vm.title = 'Edit Service';
+                        vm.serviceStartDatepicker.data("DateTimePicker").date(new Date(vm.service.service_start));
+                        vm.serviceEndDatepicker.data("DateTimePicker").date(new Date(vm.service.service_end));
                     });
             } else {
 
