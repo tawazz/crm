@@ -5,7 +5,7 @@ $app->get('/authorize',function() use ($app){
     if($access_token){
         $app->response->redirect($app->urlFor('home'));
     }else{
-        $app->response->redirect($app->Config->get("auth.server")."/authorize?redirect_url=http://crm/authorize&response=code");
+        $app->response->redirect($app->Config->get("auth.server")."/authorize?redirect_url=".$app->Config->get("auth.client"));
     }
 })->name('authorize');
 
@@ -15,7 +15,7 @@ $app->get('/logout',function() use ($app){
     $app->view()->appendData([
         "auth"=>false
     ]);
-    $app->response->redirect($app->Config->get("auth.server")."/logout?redirect_url=http://crm/authorize");
+    $app->response->redirect($app->Config->get("auth.server")."/logout?redirect_url=".$app->Config->get("auth.client"));
     return 0;
 })->name('logout');
 
@@ -26,7 +26,7 @@ $app->get('/login',function() use ($app){
         $app->access_token = $access_token;
         $app->response->redirect($app->urlFor('home'));
     }else{
-        $app->response->redirect($app->Config->get("auth.server")."/authorize?redirect_url=http://crm/authorize&response=code");
+        $app->response->redirect($app->Config->get("auth.server")."/authorize?redirect_url=".$app->Config->get("auth.client"));
     }
 })->name('login');
 

@@ -63,14 +63,14 @@ class Before extends Middleware{
                   ]);
               }
           }else{
-              $app->response->redirect($app->Config->get("auth.server").'/authorize?redirect_url=http://crm/authorize&response=code');
+              $app->response->redirect($app->Config->get("auth.server").'/authorize?redirect_url='.$app->Config->get("auth.client"));
               return 0;
           }
 
 
       } catch (\Exception $e) {
           if($e->getResponse()->getStatusCode() == 403 ){
-              $app->response->redirect($app->Config->get("auth.server").'/authorize?redirect_url=http://crm/authorize&response=code');
+              $app->response->redirect($app->Config->get("auth.server").'/authorize?redirect_url='.$app->Config->get("auth.client"));
               return 0;
           }
       }

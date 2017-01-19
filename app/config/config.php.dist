@@ -22,6 +22,7 @@
       ],
       'auth'         => [
           "server"   => "http://localhost/tazzy_auth",
+          "client"   => "http://crm/authorize"
       ]
   ];
  ?>
