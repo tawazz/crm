@@ -16,7 +16,7 @@
 
     })->name('api.get.bill');
 
-    $app->get('/bill/status',function() use ($app) {
+    $app->get('/bills/status',function() use ($app) {
       $res = $app->response;
       $res->headers->set('Content-Type', 'application/json');
       try {
@@ -32,11 +32,11 @@
 
     })->name('api.get.bill.types');
 
-    $app->get('/bill/:id',function($id) use ($app) {
+    $app->get('/bills/:id',function($id) use ($app) {
       $res = $app->response;
       $res->headers->set('Content-Type', 'application/json');
       try {
-        $bill = $app->bill->findOrFail($id);
+        $bill = $app->Billing->findOrFail($id);
         $bill->service = $bill->service->customer;
         $res->isOk();
         echo json_encode($bill);
@@ -49,14 +49,14 @@
 
     })->name('api.retrive.bill');
 
-    $app->put('/bill/:id',function($id) use ($app) {
+    $app->put('/bills/:id',function($id) use ($app) {
 
       $res = $app->response;
       $res->headers->set('Content-Type', 'application/json');
       $body = $app->request->getBody();
       try {
         $body = json_decode($body,true);
-        $bill = $app->bill->findOrFail($id);
+        $bill = $app->Billing->findOrFail($id);
         $bill->fill($body);
         $bill->save();
         $res->isOk();
@@ -70,11 +70,11 @@
 
     })->name('api.update.bill');
 
-    $app->delete('/bill/:id',function($id) use ($app) {
+    $app->delete('/bills/:id',function($id) use ($app) {
       $res = $app->response;
       $res->headers->set('Content-Type', 'application/json');
       try {
-        $bill = $app->bill->findOrFail($id);
+        $bill = $app->Billing->findOrFail($id);
         $res->isOk();
         $bill->delete();
         echo json_encode(["deleted"=>true]);
@@ -86,14 +86,14 @@
       }
     })->name('api.delete.bill');
 
-    $app->post('/bill',function() use ($app) {
+    $app->post('/bills',function() use ($app) {
       $body = $app->request->getBody();
       $body = json_decode($body,true);
-      $body->password = base64_encode($body->password);
-      $bill = $app->bill->create($body);
+      $bill = $app->Billing->create($body);
       $bill->save();
 
       $res = $app->response;
+      $res->isOk();
       $res->headers->set('Content-Type', 'application/json');
       echo json_encode($bill);
 

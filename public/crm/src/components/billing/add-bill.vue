@@ -3,26 +3,20 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="jumbotron text-center" v-bind:class="{ 'contact': bill.id }">
-          <div v-if="bill.id">
-            <p><li class="fa fa-6x fa-globe "></li></p>
-            <h1>{{ bill.name }}</h1>
+          <div>
+            <p><li class="fa fa-6x fa-money "></li></p>
+            <h1>{{title}}</h1>
             <p><router-link :to="{name:'billing'}" class="btn btn-default btn-lg btn-raised"  role="button">Back To Billing</router-link></p>
           </div>
-          <div v-else>
-            <p><li class="fa fa-6x fa-user-plus "></li></p>
-            <h1>{{title}}</h1>
-            <p><router-link :to="{name:'billing'}" class="btn btn-primary btn-lg"  role="button">Back To Billing</router-link></p>
-          </div>
-
         </div>
         <div class="panel panel-default" v-show="!isLoading">
           <div class="panel-body">
-            <form >
+            <form name="billingForm">
               <div class="row">
                 <div class="col-md-6">
                     <div class="form-group ">
                       <label class="control-label" for="inputSuccess2">Customer</label>
-                      <select class="form-control" v-model="bill.customer_id">
+                      <select class="form-control" v-model="bill.customer_id" required="true">
                         <option v-for="customer in customers" :value="customer.id">{{customer.first_name}} {{customer.last_name}}</option>
                       </select>
                     </div>
@@ -46,7 +40,7 @@
                       <select class="form control" v-show="status.length < 1">
                           <option value="">Loading...</option>
                       </select>
-                      <select v-if="status.length > 0" class="form-control" v-model="bill.status">
+                      <select v-if="status.length > 0" class="form-control" v-model="bill.status" required="true">
                           <option v-for="st in status" :value="st">{{st}}</option>
                       </select>
                     </div>
@@ -56,15 +50,15 @@
                     <label class="control-label" for="inputSuccess2">Price</label>
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-usd"></i></span>
-                      <input type="number" class="form-control" v-model="bill.amount" min="1" step="any" />
+                      <input type="number" class="form-control" v-model="bill.amount" min="1" step="any" required="true" />
                     </div>
 
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group ">
-                    <label class="control-label" for="inputSuccess2">Bill Due</label>
-                    <input type="text" id="bill-date" class="form-control" v-model="bill.due"  />
+                    <label class="control-label" for="inputSuccess2">Payment Date</label>
+                    <input type="text" id="bill-date" class="form-control"   />
                   </div>
                 </div>
               </div>
@@ -94,7 +88,7 @@
     } from '../../hooks.js';
     import loader from '../../util/loader.vue'
     import confirmbox from '../../util/confirmbox.vue'
-
+    import vd from 'formValidate'
     export default {
         name: 'addbill',
         components: {
@@ -107,11 +101,12 @@
                 bill: {
                     id: null,
                     amount: '',
-                    payed_on: '',
+                    payed_on: null,
                     status: '',
                     customer_id: '',
                     service_id:''
                 },
+                billingForm:null,
                 services:{},
                 status:[],
                 title: 'Add New Bill',
@@ -154,31 +149,37 @@
             },
             saveBill: function() {
                 var vm = this;
-                if (!this.bill.id) {
-                    vm.isLoading = true;
-                    $.post("/api/bills", JSON.stringify(this.bill)).done(function(data) {
-                        if (data.error) {
-                            alert(data.error)
-                        } else {
-                            vm.bill = data;
-                        }
-                        vm.isLoading = false;
-                    });
-                } else {
-                    vm.isLoading = true;
-                    $.ajax({
-                        url: "/api/bills/" + this.bill.id,
-                        type: 'PUT',
-                        data: JSON.stringify(vm.bill),
-                        success: function(data) {
+                if (vd.validate(vm.billingForm).isValid) {
+                    if (!this.bill.id) {
+                        vm.isLoading = true;
+                        $.post("/api/bills", JSON.stringify(vm.bill)).done(function(data) {
                             if (data.error) {
                                 alert(data.error)
                             } else {
                                 vm.bill = data;
                             }
                             vm.isLoading = false;
-                        }
-                    });
+                        });
+                    } else {
+                        vm.isLoading = true;
+                        var data = vm.bill;
+                        delete data["service"];
+                        delete data["customer"];
+                        delete data["updated_at"];
+                        $.ajax({
+                            url: "/api/bills/" + this.bill.id,
+                            type: 'PUT',
+                            data: JSON.stringify(data),
+                            success: function(data) {
+                                if (data.error) {
+                                    alert(data.error)
+                                } else {
+                                    vm.bill = data;
+                                }
+                                vm.isLoading = false;
+                            }
+                        });
+                    }
                 }
 
             },
@@ -192,7 +193,7 @@
                             alert(data.error)
                         } else {
                             vm.$router.push({
-                                "name": "bills"
+                                "name": "billing"
                             });
                         }
                     }
@@ -222,7 +223,7 @@
           },
           getStatus:function () {
                 var vm = this;
-                var url = '/api/bill/status';
+                var url = '/api/bills/status';
                 $.ajax({
                    url: url,
                    type: 'GET',
@@ -233,6 +234,7 @@
             },
             handleEvents:function () {
                 let vm = this;
+                vm.billingForm = document.forms.billingForm;
                 vm.billDatepicker = $("#bill-date").datetimepicker({
                     format: 'ddd MMM Do, YYYY',
                     showClear:true,
@@ -258,6 +260,7 @@
                     .done(function(jsonData) {
                         vm.bill = jsonData
                         vm.title = 'Edit Bill';
+                        vm.billDatepicker.data("DateTimePicker").date(new Date(vm.bill.payed_on));
                     });
             } else {
 

@@ -57,6 +57,7 @@
       try {
         $body = json_decode($body,true);
         $vault = $app->Vault->findOrFail($id);
+        $body->password = base64_encode($body->password);
         $vault->fill($body);
         $vault->save();
         $res->isOk();
