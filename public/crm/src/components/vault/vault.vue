@@ -34,7 +34,7 @@
                         </div>
                         <div class="panel-body" style="padding:0;">
                           <div class="col-xs-7">
-                            <small class="text-primary">{{v.url}}</small><br/>
+                            <a :href="v.url" class="text-primary" ><small >{{v.url|trim}}</small></a><br/>
                             <small>{{v.service.customer.first_name}} {{v.service.customer.last_name}}</small><br>
                             <small>{{v.notes}}</small>
                           </div>
@@ -117,6 +117,15 @@ export default {
         base64_decode:function (val) {
             if(val){
                 return atob(val);
+            }
+        },
+        trim:function (val,len) {
+            len = (len) ? len : 30;
+
+            if (val.length > len) {
+                return val.substring(0,len-3)+"..."
+            }else{
+                return val;
             }
         }
   },
