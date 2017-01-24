@@ -36,7 +36,7 @@
                           <div class="col-xs-7">
                             <a :href="v.url" class="text-primary" ><small >{{v.url|trim}}</small></a><br/>
                             <small>{{v.service.customer.first_name}} {{v.service.customer.last_name}}</small><br>
-                            <small>{{v.notes}}</small>
+                            <small>{{v.notes|trim}}</small>
                           </div>
                           <div class="col-xs-5">
                             <div class="pull-right">
