@@ -1,6 +1,7 @@
 <?php
 namespace HTTP\Middleware;
 use Slim\Middleware;
+use GuzzleHttp\Exception\RequestException;
 
 /**
  *
@@ -68,11 +69,15 @@ class Before extends Middleware{
           }
 
 
-      } catch (\Exception $e) {
+      } catch (RequestException $e) {
+
           if($e->getResponse()->getStatusCode() == 403 ){
               $app->response->redirect($app->Config->get("auth.server").'/authorize?redirect_url='.$app->Config->get("auth.client"));
               return 0;
           }
+      }
+      catch(\Exception $e){
+        die($e);
       }
   }
 
