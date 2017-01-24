@@ -46,7 +46,7 @@
   $app->container->singleton('Http',function() use ($app){
     return  new HTTP([
       'allow_redirects' => true,
-      'cert' => __DIR__."/../../cacert.pem"
+      'verify' => false
       //'proxy' => "localhost:8888"
     ]);
   });
