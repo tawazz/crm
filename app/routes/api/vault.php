@@ -57,7 +57,7 @@
       try {
         $body = json_decode($body,true);
         $vault = $app->Vault->findOrFail($id);
-        $body->password = base64_encode($body->password);
+        $body['password'] = base64_encode($body['password']);
         $vault->fill($body);
         $vault->save();
         $res->isOk();
@@ -90,7 +90,7 @@
     $app->post('/vault',function() use ($app) {
       $body = $app->request->getBody();
       $body = json_decode($body,true);
-      $body->password = base64_encode($body->password);
+      $body['password'] = base64_encode($body['password']);
       $vault = $app->Vault->create($body);
       $vault->save();
 
