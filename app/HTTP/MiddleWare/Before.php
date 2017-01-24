@@ -70,8 +70,11 @@ class Before extends Middleware{
 
 
       } catch (RequestException $e) {
-
-          if($e->getResponse()->getStatusCode() == 403 ){
+          $response = $e->getResponse();
+          if (!$response) {
+            die($e);
+          }
+          if($response->getStatusCode() == 403 ){
               $app->response->redirect($app->Config->get("auth.server").'/authorize?redirect_url='.$app->Config->get("auth.client"));
               return 0;
           }

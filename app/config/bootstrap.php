@@ -46,6 +46,7 @@
   $app->container->singleton('Http',function() use ($app){
     return  new HTTP([
       'allow_redirects' => true,
+      'verify' => false
       //'proxy' => "localhost:8888"
     ]);
   });
