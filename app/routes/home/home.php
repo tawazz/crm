@@ -1,5 +1,5 @@
 <?php
-  $app->get('/',$require_login,function() use ($app){
+  $app->get('/',$require_admin,function() use ($app){
     $app->render('home/home.php');
   })->name('home');
 
