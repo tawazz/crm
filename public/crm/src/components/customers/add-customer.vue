@@ -97,15 +97,6 @@
             let vm = this;
             return {
                 form:null,
-                customer: {
-                    id: null,
-                    first_name: '',
-                    last_name: '',
-                    email: '',
-                    address: '',
-                    phone: '',
-                    company: ''
-                },
                 title: 'Add New Customer',
                 isLoading: false,
                 deletePrompt: {
@@ -124,9 +115,29 @@
                 },
             }
         },
+        beforeRouteEnter (to, from, next) {
+            next(vm =>{
+                if(vm.$store.state.customers.length < 1){
+                    $.get("/api/bookings").done(function (json) {
+                        vm.$store.commit("LOADCUSTOMERS",json);
+                    });
+                }
+            });
+        },
         computed: {
             isEdit:function () {
                 return (this.customer.id)?true:false;
+            },
+            customer: function () {
+                let vm =this;
+                if(vm.$store.state.customers.length > 0){
+                    vm.title = 'Edit Customer';
+                    var customer = vm.$store.state.customers.filter(c => {
+                        return c.id == vm.$route.params.id;
+                    });
+                    return customer[0];
+                }
+                return { id : null };
             }
         },
         methods: {
@@ -136,7 +147,7 @@
             saveCustomer: function() {
                 var vm = this;
                 if (vd.validate(vm.form).isValid) {
-                    if (!this.customer.id) {
+                    if (!vm.customer.id) {
                         vm.isLoading = true;
                         $.post("/api/customers", JSON.stringify(this.customer)).done(function(data) {
                             if (data.error) {
@@ -184,17 +195,7 @@
         mounted: function() {
             var vm = this;
             vm.form = document.forms.addCustomer;
-            if (vm.$route.params.id) {
-                var url = '/api/customers/' + vm.$route.params.id;
-                $.ajax({
-                        method: "GET",
-                        url: url,
-                    })
-                    .done(function(jsonData) {
-                        vm.customer = jsonData
-                        vm.title = 'Edit Customer';
-                    });
-            }
+
         }
     }
 </script>

@@ -84,6 +84,20 @@ export default {
   methods:{
 
   },
+  beforeRouteEnter (to, from, next) {
+      next(vm =>{
+          if(vm.$store.state.customers.length < 1){
+              $.get("/api/customers").done(function (json) {
+                  vm.$store.commit("LOADCUSTOMERS",json);
+              });
+          }
+      });
+  },
+  computed:{
+      customers: function () {
+         return this.$store.state.customers;
+      }
+  },
   mounted:function(){
     let vm =this;
     vm.$children[2].vmDataTable.on('click','a[data-edit]',function (event) {

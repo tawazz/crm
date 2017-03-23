@@ -14,6 +14,7 @@ import invoice from './components/billing/invoice.vue'
 import addBill from './components/billing/add-bill.vue'
 import NProgress from 'vue-nprogress'
 import Router from 'vue-router'
+import Store from "./store.js"
 var css = require('./hook-css.js');
 Vue.use(Router);
 Vue.use(NProgress);
@@ -110,5 +111,6 @@ const router = new Router({
 
 const v = new Vue({
   router,
+  "store": Store,
   nprogress
 }).$mount('#app');
